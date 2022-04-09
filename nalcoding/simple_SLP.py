@@ -41,7 +41,7 @@ def eval_accuracy(output, y):
 def backprop_postproc_oneline(G_loss, diff):
     return 2 * diff / np.prod(diff.shape)
 
-def foward_postproc(output, y): # 순전파
+def forward_postproc(output, y): # 순전파
     diff = output - y
     square = np.square(diff)
     loss = np.mean(square)
@@ -65,7 +65,7 @@ def forward_neuralnet(x):
     output = np.matmul(x, weight) + bias # 신경망 출력 -> 가중치 곱셈은 행렬끼리 곱셈, 편향 덧셈은 행렬과 벡터의 덧셈
     return output
 
-def backdrop_neuralnet(G_output, x):
+def backprop_neuralnet(G_output, x):
     global weight, bias
     g_output_w = x.transpose()
 
@@ -81,8 +81,8 @@ def run_train(x, y): # 미니배치 학습 처리 담당
     accuracy = eval_accuracy(output, y) # 보고용 정확도 계산 -> accuracy 변수 저장
 
     G_loss = 1.0 # 역전파 시작점
-    G_output = backdrop_postproc(G_loss, aux_pp) # 역전파 처리 / G_output 구하기
-    back_drop_neuralnet(G_output, aux_nn)
+    G_output = backprop_postproc(G_loss, aux_pp) # 역전파 처리 / G_output 구하기
+    backprop_neuralnet(G_output, aux_nn)
     return loss, accuracy
 
 def run_test(x, y):
