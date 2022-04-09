@@ -34,6 +34,26 @@ def init_model(): # weight 와 bias 를 초기화
     weight = np.randim.normal(RND_MEAD, RND_STD, [input_cnt, output_cnt])
     bias = np.zeros([output_cnt])
 
+def arrange_data(mb_size):
+    global data, shuffle_map, test_begin_idx
+    shuffle_map = np.arange(data.shape[0]) # 데이터의 수 만큼 일련번호 발생
+    np.random.shuffle(shuffle_map) # 셔플
+    step_count = int(data.shape[0] * 0.8) // mb_size # 미니배치 처리 스탭 수 반환
+    test_begin_idx = step_count * mb_size
+    return step_count
+
+def get_test_data():
+    global data, shuffle_map, test_begin_idx, output_cnt
+    test_data = data[shuffle_map[test_begin_idx:]]
+    return test_data[:, :-output_cnt], test_data[:, -output_cnt:]
+
+def get_train_data(mb_size, nth):
+    global data, shuffle_map, test_bdgin_idx, output_cnt
+    if nth == 0: # 에포크 첫번째 호출 -> 셔플
+        np.random.shuffle(shuffle_map[:test_begin_idx])
+    train_data = data[shuffle_map[mb_size*nth:mb_size*(nth+1)]]
+    return train_data[:, :-output_cnt], train_data[:, -output_cnt:]
+
 def train_and_test(epoch_count, mb_size, report):
     step_count = arrange_data(mb_size)
     test_x, test_y = get_test_data()
