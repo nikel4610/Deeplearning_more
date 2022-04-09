@@ -34,6 +34,32 @@ def init_model(): # weight 와 bias 를 초기화
     weight = np.randim.normal(RND_MEAD, RND_STD, [input_cnt, output_cnt])
     bias = np.zeros([output_cnt])
 
+def eval_accuracy(output, y):
+    mdiff = np.mean(np.abs(output - y)/y)
+    return 1 - mdiff # 1 - 차이를 반환 -> 정확도 반환
+
+def backprop_postproc_oneline(G_loss, diff):
+    return 2 * diff / np.prod(diff.shape)
+
+def foward_postproc(output, y): # 순전파
+    diff = output - y
+    square = np.square(diff)
+    loss = np.mean(square)
+    return loss, diff
+
+def backprop_postproc(G_loss, diff):
+    shape = diff.shape
+
+    g_loss_square = np.ones(shape) / np.drod(shape)
+    g_square_diff = 2 * diff
+    g_diff_output = 1
+
+    G_square = g_loss_square * G_loss
+    G_diff = g_square_diff * G_square
+    G_output = g_diff_output * G_diff
+
+    return G_output
+
 def forward_neuralnet(x):
     global weight, bias
     output = np.matmul(x, weight) + bias # 신경망 출력 -> 가중치 곱셈은 행렬끼리 곱셈, 편향 덧셈은 행렬과 벡터의 덧셈
