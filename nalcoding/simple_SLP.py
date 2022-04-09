@@ -11,6 +11,7 @@ RND_MEAD = 0 # 정규분포 평균
 RND_STD = 0.0030 # 정규분포 표준편차
 
 LEARNING_RATE = 0.001 # 학습률
+# 학습률 다양하게 바꾸어 가며 실행 가능
 
 def load_abalone_dataset():
     with open('D:/python_project/nalcoding/Datasets/abalone.csv') as csvfile:
@@ -31,7 +32,7 @@ def load_abalone_dataset():
 
 def init_model(): # weight 와 bias 를 초기화
     global weight, bias, input_cnt, output_cnt
-    weight = np.randim.normal(RND_MEAD, RND_STD, [input_cnt, output_cnt])
+    weight = np.random.normal(RND_MEAD, RND_STD, [input_cnt, output_cnt])
     bias = np.zeros([output_cnt])
 
 def eval_accuracy(output, y):
@@ -132,9 +133,7 @@ def train_and_test(epoch_count, mb_size, report):
     print('\nFinal: final acc = {:5.3f}'.format(final_acc))
 
 
-def abalone_exec(epoch_count = 10, mb_size = 10, report = 1):
+def abalone_exec(epoch_count = 10, mb_size = 10, report = 1): # 값 바꾸어 가며 학습 가능
     load_abalone_dataset()
     init_model()
     train_and_test(epoch_count, mb_size, report)
-
-abalone_exec()
