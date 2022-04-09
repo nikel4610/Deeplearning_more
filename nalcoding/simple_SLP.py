@@ -132,7 +132,9 @@ def train_and_test(epoch_count, mb_size, report):
     print('\nFinal: final acc = {:5.3f}'.format(final_acc))
 
 
-def abaloine_exec(epoch_count = 10, mb_size = 10, report = 1):
+def abalone_exec(epoch_count = 10, mb_size = 10, report = 1):
     load_abalone_dataset()
     init_model()
     train_and_test(epoch_count, mb_size, report)
+
+abalone_exec()
