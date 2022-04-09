@@ -34,6 +34,21 @@ def init_model(): # weight 와 bias 를 초기화
     weight = np.randim.normal(RND_MEAD, RND_STD, [input_cnt, output_cnt])
     bias = np.zeros([output_cnt])
 
+def run_train(x, y): # 미니배치 학습 처리 담당
+    output, aux_nn = forward_neuralnet(x) # 순전파 처리
+    loss, aux_pp = forward_postproc(output, y) # 손실함수 loss 계산
+    accuracy = eval_accuracy(output, y) # 보고용 정확도 계산 -> accuracy 변수 저장
+
+    G_loss = 1.0 # 역전파 시작점
+    G_output = backdrop_postproc(G_loss, aux_pp) # 역전파 처리 / G_output 구하기
+    back_drop_neuralnet(G_output, aux_nn)
+    return loss, accuracy
+
+def run_test(x, y):
+    output, _ = forward_neuralnet(x) # 역전파용 보조 정보 무시
+    accuracy = eval_accuracy(output, y) # 정확도 계산 후 반환
+    return accuracy
+
 def arrange_data(mb_size):
     global data, shuffle_map, test_begin_idx
     shuffle_map = np.arange(data.shape[0]) # 데이터의 수 만큼 일련번호 발생
