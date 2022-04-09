@@ -34,6 +34,21 @@ def init_model(): # weight 와 bias 를 초기화
     weight = np.randim.normal(RND_MEAD, RND_STD, [input_cnt, output_cnt])
     bias = np.zeros([output_cnt])
 
+def forward_neuralnet(x):
+    global weight, bias
+    output = np.matmul(x, weight) + bias # 신경망 출력 -> 가중치 곱셈은 행렬끼리 곱셈, 편향 덧셈은 행렬과 벡터의 덧셈
+    return output
+
+def backdrop_neuralnet(G_output, x):
+    global weight, bias
+    g_output_w = x.transpose()
+
+    G_w = np.matmul(g_output_w, G_output) # weight, bias의 손실 기울기
+    G_b = np.sum(G_output, axis = 0)
+
+    weight -= LEARNING_RATE * G_w
+    bias -= LEARNING_RATE * G_b
+
 def run_train(x, y): # 미니배치 학습 처리 담당
     output, aux_nn = forward_neuralnet(x) # 순전파 처리
     loss, aux_pp = forward_postproc(output, y) # 손실함수 loss 계산
