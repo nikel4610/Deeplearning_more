@@ -3,6 +3,27 @@ import simple_SLP
 import csv
 import numpy as np
 
+def train_and_test(epoch_count, mb_size, report):
+    step_count = simple_SLP.arrange_data(mb_size)
+    test_x, test_y = simple_SLP.get_test_data()
+
+    for epoch in range(epoch_count):
+        losses = []
+
+        for n in range(step_count):
+            train_x, train_y = simple_SLP.get_train_data(mb_size, n)
+            loss, _ = simple_SLP.train(train_x, train_y)
+            losses.append(loss)
+
+            if report > 0 and (epoch + 1) % report == 0:
+                acc = simple_SLP.run_test(test_x, test_y)
+                acc_str = ','.join(['%5.3f']*4) % tuple(acc)
+                print('Epoch {}: loss={:5.3f}, result = {}'.format(epoch+1, np.mean(losses), acc_str))
+
+        acc = simple_SLP.run_test(test_x, test_y)
+        acc_str = ','.join(['%5.3f']*4) % tuple(acc)
+        print('\nFinal Test: result = {}'.format(acc_str))
+
 def safe_div(p, q):
     p, q = float(p), float(q)
     if np.abs(q) < 1.0e-20: return np.sign(p)
@@ -54,4 +75,4 @@ def load_pulsar_dataset(adjust_ratio):
 def pulsar_exec(epoch_count = 10, mb_size = 10, report = 1, adjust_ratio = False):
     load_pulsar_dataset(adjust_ratio)
     simple_SLP.init_model()
-    simple_SLP.train_and_test(epoch_count, mb_size, report)
+    train_and_test(epoch_count, mb_size, report)
