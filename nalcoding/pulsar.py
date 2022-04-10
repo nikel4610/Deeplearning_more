@@ -1,5 +1,6 @@
 import csv
 import numpy as np
+import simple_SLP
 
 def relu(x): # 원솟값과 0을 비교해서 작지 않은 쪽 고름
     return np.maximum(x, 0) # max 아님 maximum 이 맞음
@@ -50,7 +51,7 @@ def load_pulsar_dataset():
     input_cnt, output_cnt = 8, 1
     data = np.array(rows, dtype='float32')
 
-def pulsar_exec(epoch_count = 10, mb_size = 10, report = 1)
+def pulsar_exec(epoch_count = 10, mb_size = 10, report = 1):
     load_pulsar_dataset()
-    init_model()
-    train_and_test(epoch_count, mb_size, report)
+    simple_SLP.init_model()
+    simple_SLP.train_and_test(epoch_count, mb_size, report)
