@@ -3,6 +3,30 @@ import simple_SLP
 import csv
 import numpy as np
 
+def safe_div(p, q):
+    p, q = float(p), float(q)
+    if np.abs(q) < 1.0e-20: return np.sign(p)
+    return p/q
+
+def eval_accuracy(output, y):
+    est_yes = np.greater(output, 0)
+    ans_yes = np.greater(y, 0.5)
+    est_no = np.logical_not(est_yes)
+    ans_no = np.logical_not(ans_yes)
+
+    tp = np.sum(np.logical_and(est_yes, ans_yes))
+    fp = np.sum(np.logical_and(est_yes, ans_no))
+    tn = np.sum(np.logical_and(est_no, ans_yes))
+    fn = np.sum(np.logical_and(est_no, ans_no))
+
+    accuracy = safe_div(tp+tn, tp+fp+tn+fn)
+    precision = safe_div(tp, tp+fp)
+    recall = safe_div(tp, tp+fn)
+    f1 = 2 * safe_div(recall * precision, recall + precision)
+
+    return [accuracy, precision, recall, f1]
+
+
 def load_pulsar_dataset(adjust_ratio):
     pulsars, stars = [], []
     with open("D:/python_project/nalcoding/Datasets/pulsar_data_test.csv") as csvfile:
