@@ -1,4 +1,3 @@
-import pulsar
 import simple_SLP
 import csv
 import numpy as np
