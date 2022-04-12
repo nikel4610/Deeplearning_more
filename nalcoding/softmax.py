@@ -2,6 +2,13 @@ import simple_SLP
 import csv
 import numpy as np
 
+def eval_accuracy(output, y):
+    estimate = np.argmax(output, axis = 1) # argmax함수를 이용해 최대값을 찾는다
+    answer = np.argmax(y, axis = 1)
+    correct = np.equal(estimate, answer) # 정답과 예측값을 비교하여 정확도 계산
+
+    return np.mean(correct) # 정답률을 구한다
+
 def backprop_postproc(G_loss, aux):
     y, output, entropy = aux
 
