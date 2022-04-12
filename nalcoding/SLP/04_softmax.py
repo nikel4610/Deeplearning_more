@@ -51,7 +51,7 @@ def forward_postproc(output, y):
     return loss, [y, output, entropy]
 
 def load_steel_dataset():
-    with open("D:/python_project/nalcoding/Datasets/faults.csv") as csvfile:
+    with open("/nalcoding/Datasets/faults.csv") as csvfile:
         csvreader = csv.reader(csvfile)
         next(csvreader, None)
         rows = []

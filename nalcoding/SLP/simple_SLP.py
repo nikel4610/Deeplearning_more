@@ -14,7 +14,7 @@ LEARNING_RATE = 0.001 # 학습률
 # 학습률 다양하게 바꾸어 가며 실행 가능
 
 def load_abalone_dataset():
-    with open('D:/python_project/nalcoding/Datasets/abalone.csv') as csvfile:
+    with open('/nalcoding/Datasets/abalone.csv') as csvfile:
         csvreader = csv.reader(csvfile)
         next(csvreader, None) # 헤더 스킵
         rows = []

@@ -49,7 +49,7 @@ def eval_accuracy(output, y):
 
 def load_pulsar_dataset(adjust_ratio):
     pulsars, stars = [], []
-    with open("D:/python_project/nalcoding/Datasets/pulsar_data_test.csv") as csvfile:
+    with open("/nalcoding/Datasets/pulsar_data_test.csv") as csvfile:
         csvreader = csv.reader(csvfile)
         next(csvreader, None)
         rows = []

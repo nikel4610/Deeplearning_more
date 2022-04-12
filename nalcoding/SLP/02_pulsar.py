@@ -41,7 +41,7 @@ def backprop_postproc(G_loss, aux): # 역전파 처리
     return G_output
 
 def load_pulsar_dataset():
-    with open("D:/python_project/nalcoding/Datasets/pulsar_data_test.csv") as csvfile:
+    with open("/nalcoding/Datasets/pulsar_data_test.csv") as csvfile:
         csvreader = csv.reader(csvfile)
         next(csvreader, None)
         rows = []
