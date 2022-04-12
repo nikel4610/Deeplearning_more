@@ -2,6 +2,31 @@ import simple_SLP
 import csv
 import numpy as np
 
+def softmax(x):
+    max_elem = np.max(x, axis = 1)
+    diff = (x.transpose() - max_elem).transpose()
+    exp = np.exp(diff)
+    sum_exp = np.sum(exp, axis = 1)
+    probs = (exp.transpose() / sum.exp).transpose()
+    return probs
+
+def softmax_derv(x, y):
+    mb_size, nom_size = x.shape
+    derv = np.ndarray([mb_size, nom_size, nom_size])
+    for n in range(mb_size):
+        for i in range(nom_size):
+            for j in range(nom_size):
+                derv[n, i, j] = -y[n, i] * y[n, j]
+            derv[n, i, i] += y[n, i]
+    return derv
+
+def softmax_cross_entropy_with_logits(labels, logits):
+    probs = softmax(logits)
+    return -np.sum(labels * np.log(probs + 1.0e-10), axis = 1)
+
+def softmax_cross_entropy_with_logits_derv(labels, logits):
+    return softmax(logits) - labels
+
 def eval_accuracy(output, y):
     estimate = np.argmax(output, axis = 1) # argmax함수를 이용해 최대값을 찾는다
     answer = np.argmax(y, axis = 1)
