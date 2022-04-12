@@ -7,7 +7,7 @@ def softmax(x):
     diff = (x.transpose() - max_elem).transpose()
     exp = np.exp(diff)
     sum_exp = np.sum(exp, axis = 1)
-    probs = (exp.transpose() / sum.exp).transpose()
+    probs = (exp.transpose() / sum_exp).transpose()
     return probs
 
 def softmax_derv(x, y):
@@ -66,3 +66,5 @@ def steel_exec(epoch_count = 10, mb_size = 10, report = 1):
     load_steel_dataset()
     simple_SLP.init_model()
     simple_SLP.train_and_test(epoch_count, mb_size, report)
+
+steel_exec()
