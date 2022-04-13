@@ -14,7 +14,7 @@ LEARNING_RATE = 0.001 # 학습률
 # 학습률 다양하게 바꾸어 가며 실행 가능
 
 def load_abalone_dataset():
-    with open('/nalcoding/Datasets/abalone.csv') as csvfile:
+    with open('D:/python_project/nalcoding/Datasets/abalone.csv') as csvfile:
         csvreader = csv.reader(csvfile)
         next(csvreader, None) # 헤더 스킵
         rows = []
@@ -51,7 +51,7 @@ def forward_postproc(output, y): # 순전파
 def backprop_postproc(G_loss, diff):
     shape = diff.shape
 
-    g_loss_square = np.ones(shape) / np.drod(shape)
+    g_loss_square = np.ones(shape) / np.prod(shape)
     g_square_diff = 2 * diff
     g_diff_output = 1
 
@@ -64,7 +64,7 @@ def backprop_postproc(G_loss, diff):
 def forward_neuralnet(x):
     global weight, bias
     output = np.matmul(x, weight) + bias # 신경망 출력 -> 가중치 곱셈은 행렬끼리 곱셈, 편향 덧셈은 행렬과 벡터의 덧셈
-    return output
+    return output, x
 
 def backprop_neuralnet(G_output, x):
     global weight, bias
@@ -120,7 +120,7 @@ def train_and_test(epoch_count, mb_size, report):
 
         for n in range(step_count): # step_count 만큼 미니배치 처리 반복
             train_x, train_y = get_train_data(mb_size, n)
-            loss, acc = run_train(test_x, test_y)
+            loss, acc = run_train(train_x, train_y)
             losses.append(loss)
             accs.append(acc)
 
