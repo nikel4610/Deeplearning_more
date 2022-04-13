@@ -1,5 +1,35 @@
 import numpy as np
 
+def set_hidden(info):
+    global hidden_cnt, hidden_config
+    if isinstance(info, int):
+        hidden_cnt = info
+        hidden_config = None
+    else:
+        hidden_config = info
+
+global hidden_config
+
+def init_model():
+    if hidden_config is not None:
+        print('은닉 계층 {}개를 갖는 다층 퍼셉트론.'.format(len(hidden_config)))
+        init_model_hiddens()
+    else:
+        print('은닉 계층을 하나를 갖는 다층 퍼셉트론.')
+        init_model_hidden1()
+
+def forward_neuralnet(x):
+    if hidden_config is not None:
+        return forward_neuralnet_hiddens(x)
+    else:
+        return forward_neuralnet_hidden1(x)
+
+def backprop_neuralnet(G_output, hiddens):
+    if hidden_config is not None:
+        backprop_neuralnet_hiddens(G_output, hiddens)
+    else:
+        backprop_neuralnet_hidden(G_output, hiddens)
+
 def backprop_neuralnet_hiddens(G_output, aux):
     global pm_output, pm_hiddens
 
