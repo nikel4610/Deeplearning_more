@@ -1,5 +1,44 @@
 import numpy as np
 
+def backprop_neuralnet_hiddens(G_output, aux):
+    global pm_output, pm_hiddens
+
+    hiddens = aux
+
+    G_output_w_out = hiddens[-1].transpose()
+    G_w_out = np.matmul(G_output_w_out, G_output)
+    G_b_out = np.sum(G_output, axis = 0)
+
+    g_output_hidden = pm_output['w'].transpose()
+    G_hidden = np.matmul(G_output, g_output_hidden)
+
+    for n in reversed(range(len(pm_hiddens))):
+        G_hidden = G_hidden * relu_derv(hiddens[n+1])
+
+        g_hidden_w_hid = hiddens[n].transpose()
+        G_w_hid = np.matmul(g_hidden_w_hid, G_hidden)
+        G_b_hid = np.sum(G_hidden, axis = 0)
+
+        g_hidden_hidden = pm_hiddens[n]['w'].transpose()
+        G_hidden = np.matmul(G_hidden, g_hidden_hidden)
+
+        pm_hiddens[n]['w'] -= LEARNING_RATE * G_w_hid
+        pm_hiddens[n]['b'] -= LEARNING_RATE * G_b_hid
+
+def forward_neuralnet_hiddens(x):
+    global pm_output, pm_hiddens
+
+    hidden = x
+    hiddens = [x]
+
+    for pm_hidden in pm_hiddens:
+        hidden = relu(np.matmul(hidden, pm_hidden['w']) + pm_hidden['b'])
+        hiddens.append(hidden)
+
+    output = np.matmul(hidden, pm_output['w']) + pm_output['b']
+
+    return output, hiddens
+
 def init_model_hiddens():
     global pm_output, pm_hiddens, input_cnt, output_cnt, hidden_config
 
