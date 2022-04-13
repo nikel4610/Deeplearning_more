@@ -1,5 +1,11 @@
 import numpy as np
 
+RND_MEAN = 0 # 정규분포 평균
+RND_STD = 0.0030 # 정규분포 표준편차
+
+LEARNING_RATE = 0.001 # 학습률
+# 학습률 다양하게 바꾸어 가며 실행 가능
+
 def set_hidden(info):
     global hidden_cnt, hidden_config
     if isinstance(info, int):

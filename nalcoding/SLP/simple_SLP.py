@@ -7,7 +7,7 @@ np.random.seed(1234) # 난수 발생
 def randomize():
     np.random.seed(time.time())
 
-RND_MEAD = 0 # 정규분포 평균
+RND_MEAN = 0 # 정규분포 평균
 RND_STD = 0.0030 # 정규분포 표준편차
 
 LEARNING_RATE = 0.001 # 학습률
@@ -32,7 +32,7 @@ def load_abalone_dataset():
 
 def init_model(): # weight 와 bias 를 초기화
     global weight, bias, input_cnt, output_cnt
-    weight = np.random.normal(RND_MEAD, RND_STD, [input_cnt, output_cnt])
+    weight = np.random.normal(RND_MEAN, RND_STD, [input_cnt, output_cnt])
     bias = np.zeros([output_cnt])
 
 def eval_accuracy(output, y):
