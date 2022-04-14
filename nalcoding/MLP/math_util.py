@@ -49,4 +49,22 @@ def softmax_cross_entropy_with_logits(labels, logits):
 def softmax_cross_entropy_with_logits_derv(labels, logits):
     return softmax(logits) - labels
 
+def load_csv(path, skip_header = True):
+    with open(path) as csvfile:
+        csvreader = csv.reader(csvfile)
+        headers = None
+        if skip_header: headers = next(csvreader, None)
+        rows = []
+        for row in csvreader:
+            rows.append(row)
+    return rows, headers
+
+def oneshot(xs, cnt):
+    return np.eye(cnt)[np.array(xs).astype(int)]
+
+def vector_to_str(x, fmt='%.2f', max_cnt=0):
+    if max_cnt == 0 or len(x) <= max_cnt:
+        return '[' + ','.join([fmt]*len(x)) % tuple(x) + ']'
+    v = x[0:max_cnt]
+    return '[' + ','.join([fmt]*len(v)) % tuple(v) + ',...]'
 
