@@ -68,3 +68,20 @@ def vector_to_str(x, fmt='%.2f', max_cnt=0):
     v = x[0:max_cnt]
     return '[' + ','.join([fmt]*len(v)) % tuple(v) + ',...]'
 
+def load_image_pixels(imagepath, resolution, input_shape):
+    img = Image.open(imagepath)
+    resized = img.resize(resolution)
+    return np.array(resized).reshape(input_shape)
+
+def draw_images_horz(xs, image_shape):
+    show_cnt = len(xs)
+    fig, axes = plt.subplots(1, show_cnt, figsize=(5,5))
+    for n in range(show_cnt):
+        img = xs[n]
+        if image_shape:
+            x3d = img.reshape(image_shape)
+            img = Image.formarray(np.uint8(x3d))
+        axes[n].imshow(img)
+        axes[n].axis('off')
+    plt.draw()
+    plt.show()
