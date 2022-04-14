@@ -85,3 +85,17 @@ def draw_images_horz(xs, image_shape):
         axes[n].axis('off')
     plt.draw()
     plt.show()
+
+def show_select_results(est, ans, target_names, max_cnt = 0):
+    for n in range(len(est)):
+        pstr = vector_to_str(100*est[n], '%2.0f', max_cnt)
+        estr = target_names[np.argmax(est[n])]
+        astr = target_names[np.argmax(ans[n])]
+        rstr = 0
+        if estr == astr: rstr = 'X'
+        print('추정확률 분포 {} => 추정 {} : 정답 {} => {}'.format(pstr, estr, astr, rstr))
+
+def list_dir(path):
+    filenames = os.listdir(path)
+    filenames.sort()
+    return filenames
