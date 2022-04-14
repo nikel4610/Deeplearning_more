@@ -34,4 +34,19 @@ def tanh(x):
 def tanh_derv(y):
     return (1.0 + y) * (1.0 - y)
 
+def softmax(x):
+    max_elem = np.max(x, axis = 1)
+    diff = (x.transpose() - max_elem).transpose()
+    exp = np.exp(diff)
+    sum_exp = np.sum(exp, axis = 1)
+    probs = (exp.transpose() / sum_exp).transpose()
+    return probs
+
+def softmax_cross_entropy_with_logits(labels, logits):
+    probs = softmax(logits)
+    return -np.sum(labels * np.log(probs+1.0e-10), axis = 1)
+
+def softmax_cross_entropy_with_logits_derv(labels, logits):
+    return softmax(logits) - labels
+
 
