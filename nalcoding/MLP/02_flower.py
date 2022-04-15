@@ -24,3 +24,8 @@ class Model(object):
         if show_cnt > 0:
             self.visualize(show_cnt)
 
+class MlpModel(Model): # 외부에서 함수 정의하고 메서드로 등록
+    def __init__(self, name, dataset, hconfigs):
+        super(MlpModel, self).__init__(name, dataset)
+        self.init_parameters(hconfigs)
+
