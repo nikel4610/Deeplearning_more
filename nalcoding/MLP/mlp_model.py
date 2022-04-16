@@ -108,4 +108,47 @@ def mlp_model_visualize(self, num): # 시각화 처리할 때 호출
 
 MlpModel.visualize = mlp_model_visualize
 
+def mlp_train_step(self, x, y):
+    self.is_training = True
+
+    output, aux_nn = self.forward_neuralnet(x)
+    loss, aux_pp = self.forward_postproc(output, y)
+    accuracy = self.eval_accuracy(x, y, output)
+
+    G_loss = 1.0
+    G_output = self.backprop_postproc(G_loss, aux_pp)
+    self.backprop_neuralnet(G_output, aux_nn)
+
+    self.is_training = False
+
+    return loss, accuracy
+
+MlpModel.train_step = mlp_train_step
+
+def mlp_forward_neuralnet(self, x):
+    hidden = x
+    aux_layers = []
+
+    for n, hconfig in enumerate(self.hconfigs):
+        hidden, aux = self.forward_layer(hidden, hconfig, self.pm_hiddens[n])
+        aux_layers.append(aux)
+
+    output, aux_out = self.forward_layer(hidden, None, self.pm_output)
+
+    return output, [aux_out, aux_layers]
+
+def mlp_backprop_neuralnet(self, G_output, aux):
+    aux_out, aux_layers = aux
+
+    G_hidden = self.backprop_layer(G_output, None, self.pm_output, aux_out)
+
+    for n in reversed(range(len(self.hconfigs))):
+        hconfig, pm, aux = self.hconfigs[n], self.pm_hiddens[n], aux_layers[n]
+        G_hidden = self.backprop_layer(G_hidden, hconfig, pm, aux)
+
+    return G_hidden
+
+MlpModel.forward_neuralnet = mlp_forward_neuralnet
+MlpModel.backprop_neuralnet = mlp_backprop_neuralnet
+
 
