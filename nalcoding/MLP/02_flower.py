@@ -29,3 +29,32 @@ class MlpModel(Model): # 외부에서 함수 정의하고 메서드로 등록
         super(MlpModel, self).__init__(name, dataset)
         self.init_parameters(hconfigs)
 
+def mlp_init_parameters(self, hconfigs):
+    self.hconfigs = hconfigs
+    self.pm_hiddens = []
+
+    prev_shape = self.dataset.input_shape
+
+    for hconfig in hconfigs:
+        pm_hidden, prev_shape = self.alloc_layer_param(prev_shape, hconfig)
+        self.pm_hiddens.append(pm_hidden)
+
+    output_cnt = int(np.proc(self.dataset.output_shape))
+    self.pm_output, _ = self.alloc_layer_param(prev_shape, output_cnt)
+
+def mp_alloc_layer_param(self, input_shape, hconfig):
+    input_cnt = np.proc(input_shape)
+    output_cnt = hconfig
+
+    weight, bias = self.alloc_param_pair([input_cnt, output_cnt])
+
+    return {'w': weight, 'b': bias}, output_cnt
+
+def mlp_alloc_param_pair(self, shape):
+    weight = np.random.normal(0, self.rand_std, shape)
+    bias = np.zeros([shape[-1]])
+    return weight, bias
+
+MlpModel.init_parameters = mlp_init_parameters
+MlpModel.alloc_layer_param = mp_alloc_layer_param
+MlpModel.alloc_param_pair = mlp_alloc_param_pair
