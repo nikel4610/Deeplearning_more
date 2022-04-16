@@ -151,4 +151,30 @@ def mlp_backprop_neuralnet(self, G_output, aux):
 MlpModel.forward_neuralnet = mlp_forward_neuralnet
 MlpModel.backprop_neuralnet = mlp_backprop_neuralnet
 
+def mlp_forward_layer(self, x, hconfig, pm):
+    y = np.matmul(x, pm['w']) + pm['b']
+    if hconfig is not None:
+        y = math_util.relu(y)
+    return y, [x, y]
+
+def mlp_backprop_layer(self, G_y, hconfig, pm, aux):
+    x, y = aux
+    if hconfig is not None:
+        G_y = math_util.relu_derv(y) * G_y
+
+        g_y_weight = x.transpose()
+        g_y_input = pm['w'].transpose()
+
+        G_weight = np.matmul(g_y_weight, G_y)
+        G_bias = np.sum(G_y, axis = 0)
+        G_input = np.matmul(G_y, g_y_input)
+
+        pm['w'] -= self.learning_rate * G_weight
+        pm['b'] -= self.learning_rate * G_bias
+
+        return G_input
+
+MlpModel.forward_layer = mlp_forward_layer
+MlpModel.backprop_layer = mlp_backprop_layer
+
 
