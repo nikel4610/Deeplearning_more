@@ -177,4 +177,13 @@ def mlp_backprop_layer(self, G_y, hconfig, pm, aux):
 MlpModel.forward_layer = mlp_forward_layer
 MlpModel.backprop_layer = mlp_backprop_layer
 
+def mlp_forward_postproc(self, output, y):
+    loss, aux_loss = self.dataset.forward_postproc(output, y)
+    extra, aux_extra = self.forward_extra_cost(y)
+    return loss + extra, [aux_loss, aux_extra]
 
+def mlp_forward_extra_cost(self, y):
+    return 0, None
+
+MlpModel.forward_postproc = mlp_forward_postproc
+MlpModel.forward_extra_cost = mlp_forward_extra_cost
