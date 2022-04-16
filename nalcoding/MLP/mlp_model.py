@@ -90,3 +90,13 @@ def mlp_model_train(self, epoch_count = 10, batch_size = 10,
     print('Model {} train ended in {} secs'.format(self.name, tm_total))
 
 MlpModel.train = mlp_model_train
+
+def mlp_model_test(self):
+    teX, teY = self.dataset.get_test_data()
+    time1 = int(time.time())
+    acc = self.eval_accuracy(teX, teY)
+    time2 = int(time.time())
+    self.dataset.test_prt_result(self.name, acc, time2-time1)
+
+MlpModel.test = mlp_model_test
+
