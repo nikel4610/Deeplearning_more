@@ -100,3 +100,12 @@ def mlp_model_test(self):
 
 MlpModel.test = mlp_model_test
 
+def mlp_model_visualize(self, num): # 시각화 처리할 때 호출
+    print('Model {} Visualization:'.format(self.name))
+    deX, deY = self.dataset.get_visualize_data(num)
+    est = self.get_estimate(deX) # 신경망 추정 정보 얻기
+    self.dataset.visualize(deX, est, deY) # 원래의 입력 및 출력 정보도 함께 얻기
+
+MlpModel.visualize = mlp_model_visualize
+
+
