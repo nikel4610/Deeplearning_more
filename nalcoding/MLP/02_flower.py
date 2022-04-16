@@ -58,3 +58,35 @@ def mlp_alloc_param_pair(self, shape):
 MlpModel.init_parameters = mlp_init_parameters
 MlpModel.alloc_layer_param = mp_alloc_layer_param
 MlpModel.alloc_param_pair = mlp_alloc_param_pair
+
+def mlp_model_train(self, epoch_count = 10, batch_size = 10,
+                    learning_rate = 0.001, report = 0):
+    self.learning_rate = learning_rate
+
+    batch_count = int(self.dataset.train_count / batch_size)
+    time1 = time2 = int(time.time())
+    if report != 0:
+        print('Model {} train started:'.format(self.name))
+
+    for epoch in range(epoch_count):
+        costs = []
+        accs = []
+        self.dataset.shuffle_train_data(batch_size*batch_count) # 데이터 뒤섞기 기능 따로 실행
+        for n in range(batch_count):
+            trX, trY = self.dataset.get_train_data(batch_size, n)
+            cost, acc = self.train_step(trX, trY)
+            costs.append(cost)
+            accs.append(acc)
+
+    if report > 0 and (epoch + 1) % report == 0:
+        vaX, vaY = self.dataset.get_validate_data(100)
+        acc = self.eval_accuracy(vaX, vaY)
+        time3 = int(time.time())
+        tm1, tm2 = time3-time2, time3-time1
+        self.dataset.train_prt_result(epoch + 1, costs, accs, acc, tm1, tm2)
+        time2 = time3
+
+    tm_total = int(time.time()) - time1
+    print('Model {} train ended in {} secs'.format(self.name, tm_total))
+
+MlpModel.train = mlp_model_train
