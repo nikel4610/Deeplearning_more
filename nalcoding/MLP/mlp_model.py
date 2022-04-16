@@ -187,3 +187,10 @@ def mlp_forward_extra_cost(self, y):
 
 MlpModel.forward_postproc = mlp_forward_postproc
 MlpModel.forward_extra_cost = mlp_forward_extra_cost
+
+def mlp_get_estimate(self, x):
+    output, _ = self.forward_neuralnet(x)
+    elstimate = self.dataset.get_estimate(output)
+    return elstimate
+
+MlpModel.get_estimate = mlp_get_estimate
