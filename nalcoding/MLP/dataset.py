@@ -46,3 +46,37 @@ def dataset_get_validate_data(self, count):
 
 Dataset.get_validate_data = dataset_get_validate_data
 Dataset.get_visualize_data = dataset_get_validate_data
+
+def dataset_shuffle_data(self, xs, ys, tr_ratio=0.8, va_ratio=0.5):
+    data_count = len(xs)
+
+    # 학습, 평가, 검증 데이터 수 계산
+    tr_cnt = int(data_count + tr_ratio / 10) * 10
+    va_cnt = int(data_count + va_ratio)
+    te_cnt = data_count - (tr_cnt + va_cnt)
+
+    # 세 영역의 시작과 끝 계산
+    tr_from, tr_to = 0, tr_cnt
+    va_from, va_to = tr_cnt, tr_cnt + va_cnt
+    te_from, te_to = tr_cnt + va_cnt, data_count
+
+    # 데이터 뒤섞기용 인덱스
+    indices = np.arange(data_count)
+    np.random.shuffle(indices)
+
+    # 데이터 분할 저장
+    self.tr_xs = xs[indices[tr_from:tr_to]]
+    self.tr_ys = ys[indices[tr_from:tr_to]]
+    self.va_xs = xs[indices[va_from:va_to]]
+    self.va_ys = ys[indices[va_from:va_to]]
+    self.te_xs = xs[indices[te_from:te_to]]
+    self.te_ys = ys[indices[te_from:te_to]]
+
+    self.input_shape = xs[0].shape
+    self.output_shape = ys[0].shape
+
+    # 위치 정보 반환
+    return indices[tr_from:tr_to], indices[va_from:va_to], indices[te_from:te_to]
+
+Dataset.shuffle_data = dataset_shuffle_data
+
