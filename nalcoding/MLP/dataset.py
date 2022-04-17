@@ -30,3 +30,19 @@ def dataset_shuffle_train_data(self, size):
 Dataset.get_train_data = dataset_get_train_data
 Dataset.shuffle_train_data = dataset_shuffle_train_data
 
+def dataset_get_test_data(self):
+    return self.te_xs, self.te_ys
+
+Dataset.get_test_data = dataset_get_test_data
+
+def dataset_get_validate_data(self, count):
+    self.va_indices = np.arange(len(self.va_xs)) # self.indices 와 관계 없음
+    np.random.shuffle(self.va_indices)
+
+    va_X = self.va_xs[self.va_indices[0:count]]
+    va_Y = self.va_ys[self.va_indices[0:count]]
+
+    return va_X, va_Y
+
+Dataset.get_validate_data = dataset_get_validate_data
+Dataset.get_visualize_data = dataset_get_validate_data
