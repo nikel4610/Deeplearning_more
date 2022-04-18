@@ -80,3 +80,25 @@ def dataset_shuffle_data(self, xs, ys, tr_ratio=0.8, va_ratio=0.5):
 
 Dataset.shuffle_data = dataset_shuffle_data
 
+def dataset_forward_postproc(self, output, y, mode=None):
+    if mode is None:
+        mode = self.mode
+
+    if mode == 'regression':
+        diff = output - y
+        square = np.square(diff)
+        loss = np.mean(square)
+        aux = diff
+    elif mode == 'binary':
+        entropy = math_util.sigmoid_cross_entropy_with_logits(y, output)
+        loss = np.mean(entropy)
+        aux = [output, y, entropy]
+    elif mode == 'select':
+        entropy = math_util.softmax_cross_entropy_with_logits(y, output)
+        loss = np.mean(entropy)
+        aux = [output, y, entropy]
+    return loss, aux
+
+Dataset.forward_postproc = dataset_forward_postproc
+
+
