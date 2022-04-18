@@ -138,4 +138,19 @@ def dataset_backprop_postproc(self, G_loss, aux, mode=None):
 
 Dataset.backprop_postproc = dataset_backprop_postproc
 
+def dataset_get_estimate(self, output, mode=None):
+    if mode is None:
+        mode = self.mode
+
+    if mode == 'regression':
+        estimate = output
+    elif mode == 'binary':
+        estimate = math_util.sigmoid(output)
+    elif mode == 'select':
+        estimate = math_util.softmax(output)
+
+    return estimate
+
+Dataset.get_estimate = dataset_get_estimate
+
 
