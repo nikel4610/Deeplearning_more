@@ -101,4 +101,41 @@ def dataset_forward_postproc(self, output, y, mode=None):
 
 Dataset.forward_postproc = dataset_forward_postproc
 
+def dataset_backprop_postproc(self, G_loss, aux, mode=None):
+    if mode is None:
+        mode = self.mode
+
+    if mode == 'regression':
+        diff = aux
+        shape = diff.shape
+
+        g_loss_square = np.ones(shape) / np.prod(shape)
+        g_square_diff = 2 * diff
+        g_diff_output = 1
+
+        G_square = g_loss_square * G_loss
+        G_diff = g_square_diff * G_square
+        G_output = g_diff_output * G_diff
+    elif mode == 'binary':
+        y, output = aux
+        shape = output.shape
+
+        g_loss_entropy = np.ones(shape) / np.prod(shape)
+        g_entropy_output = math_util.sigmoid_corss_entropy_with_logits_derv(y, output)
+
+        G_entropy = g_loss_entropy * G_loss
+        G_output = g_entropy_output * G_entropy
+    elif mode == 'select':
+        output, y, entropy = aux
+
+        g_loss_entropy = 1.0 / np.prod(entropy.shape)
+        g_entropy_output = math_util.softmax_cross_entropy_with_logits_derv(y, output)
+
+        G_entropy = g_loss_entropy * G_loss
+        G_output = g_entropy_output * G_entropy
+
+    return G_output
+
+Dataset.backprop_postproc = dataset_backprop_postproc
+
 
