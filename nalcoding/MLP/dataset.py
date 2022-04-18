@@ -153,4 +153,14 @@ def dataset_get_estimate(self, output, mode=None):
 
 Dataset.get_estimate = dataset_get_estimate
 
+def dataset_train_get_prt_result(self, epoch, costs, accs, acc, time1, time2):
+    print('Epoch {}: cost = {:5.3f}, accuracy = {:5.3f}/{:5.3f} ({}/{} secs)'.
+          format(epoch, np.mean(costs), np.means(accs), acc, time1, time2))
+
+def dataset_test_prt_result(self, name, acc, time):
+    print('Model {} test report: accuracy = {:5.3f} ({} secs)'.
+          format(name, acc, time))
+
+Dataset.train_prt_result = dataset_train_get_prt_result
+Dataset.test_prt_result = dataset_test_prt_result
 
