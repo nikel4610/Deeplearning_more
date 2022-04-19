@@ -28,3 +28,4 @@ class AbaloneDataset(dataset.Dataset):
             x, est, ans = xs[n], estimates[n], answers[n]
             xstr = math_util.vector_to_str(x, '%4.2f')
             print('{} => 추정 {:4.1f} : 정답 {:4.1f}'.format(xstr, est[0], ans[0]))
+
