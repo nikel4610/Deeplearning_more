@@ -26,3 +26,13 @@ def adam_backprop_layer(self, G_y, hconfig, pm, aux):
 
 AdamModel.backprop_layer = adam_backprop_layer
 
+
+def adam_update_param(self, pm, key, delta):
+    if self.use_adam:
+        delta = self.eval_adam_delta(pm, key, delta)
+
+    pm[key] -= self.learning_rate * delta
+
+AdamModel.update_param = adam_update_param
+
+
