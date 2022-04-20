@@ -32,3 +32,13 @@ def cnn_basic_forward_layer(self, x, hconfig, pm):
 
 CnnBasicModel.forward_layer = cnn_basic_forward_layer
 
+def cnn_basic_backprop_lyaer(self, G_y, hconfig, pm, aux):
+    layer_type = get_layer_type(hconfig)
+
+    m_name = 'backprop_{}_layer'.format(layer_type)
+    method = getattr(self, m_name)
+    G_input = method(G_y, hconfig, pm, aux)
+
+    return G_input
+
+CnnBasicModel.backprop_layer = cnn_basic_backprop_lyaer
