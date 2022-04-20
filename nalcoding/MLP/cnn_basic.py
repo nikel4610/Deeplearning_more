@@ -11,6 +11,29 @@ class CnnBasicModel(adam_model.AdamModel):
         super(CnnBasicModel, self).__init__(name, dataset, hconfigs)
         self.use_adam = True # adam 플래그의 초깃값을 True로 바꾸어 자동 적용
 
+def get_layer_type(hconfig):
+    if not isinstance(hconfig, list):
+        return 'full'
+    return hconfig[0]
+
+def get_conf_param(hconfig, key, defval = None):
+    if not isinstance(hconfig, list):
+        return defval
+    if len(hconfig) <= 1:
+        return defval
+    if not key in hconfig[1]:
+        return defval
+    return hconfig[1][key]
+
+def get_conf_param_2d(hconfig, key, defval = None):
+    if len(hconfig) <= 1:
+        return defval
+    if not key in hconfig[1]:
+        return defval
+    if isinstance(val, list):
+        return val
+    return [val, val]
+
 def cnn_basic_alloc_layer_param(self, input_shape, hconfig):
     layer_type = get_layer_type(hconfig)
 
