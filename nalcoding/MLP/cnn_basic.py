@@ -25,7 +25,7 @@ def get_conf_param(hconfig, key, defval = None):
         return defval
     return hconfig[1][key]
 
-def get_conf_param_2d(hconfig, key, defval = None):
+def get_conf_param_2d(val, hconfig, key, defval = None):
     if len(hconfig) <= 1:
         return defval
     if not key in hconfig[1]:
@@ -105,3 +105,19 @@ CnnBasicModel.alloc_conv_layer = cnn_basic_alloc_conv_layer
 CnnBasicModel.alloc_max_layer = cnn_basic_alloc_pool_layer
 CnnBasicModel.alloc_avg_layer = cnn_basic_alloc_pool_layer
 
+def cnn_basic_forward_full_layer(self, x, hconfig, pm):
+    if pm is None:
+        return x, None
+
+    x_org_shape = x.shape
+
+    if len(x.shape) != 2:
+        mb_size = x.shape[0]
+        x = x.reshape([mb_size, -1])
+
+    affine = np.matmul(x, pm['w']) + pm['b']
+    y = self.activate(affine, hconfig)
+
+    return y, [x, y, x_org_shape]
+
+CnnBasicModel.forward_full_layer = cnn_basic_forward_full_layer
