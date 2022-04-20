@@ -9,3 +9,14 @@ class CnnBasicModel(adam_model.AdamModel):
         self.kernals = []
         super(CnnBasicModel, self).__init__(name, dataset, hconfigs)
         self.use_adam = True # adam 플래그의 초깃값을 True로 바꾸어 자동 적용
+
+def cnn_basic_alloc_layer_param(self, input_shape, hconfig):
+    layer_type = get_layer_type(hconfig)
+
+    m_name = 'alloc_{}_layer'.format(layer_type)
+    method = getattr(self, m_name)
+    pm, output_shape = method(input_shape, hconfig)
+
+    return pm, output_shape
+
+CnnBasicModel.alloc_layer_param = cnn_basic_alloc_layer_param
