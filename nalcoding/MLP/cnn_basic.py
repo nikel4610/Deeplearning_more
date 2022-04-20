@@ -20,3 +20,15 @@ def cnn_basic_alloc_layer_param(self, input_shape, hconfig):
     return pm, output_shape
 
 CnnBasicModel.alloc_layer_param = cnn_basic_alloc_layer_param
+
+def cnn_basic_forward_layer(self, x, hconfig, pm):
+    layer_type = get_layer_type(hconfig)
+
+    m_name = 'forward_{}_layer'.format(layer_type)
+    method = getattr(self, m_name)
+    y, aux = method(x, hconfig, pm)
+
+    return y, aux
+
+CnnBasicModel.forward_layer = cnn_basic_forward_layer
+
