@@ -1,5 +1,6 @@
 import adam_model
 import numpy as np
+import math_util
 
 class CnnBasicModel(adam_model.AdamModel):
     def __init__(self, name, dataset, hconfigs, show_maps=False):
@@ -143,3 +144,36 @@ def cnn_basic_backprop_full_layer(self, G_y, hconfig, pm, aux):
     return G_input.reshape(x_org_shape)
 
 CnnBasicModel.backprop_full_layer = cnn_basic_backprop_full_layer
+
+def cnn_basic_activate(self, affine, hconfig):
+    if hconfig is None:
+        return affine
+
+    func = get_conf_param(hconfig, 'actfunc', 'relu')
+
+    if func == 'none':
+        return affine
+    elif func == 'relu':
+        return math_util.relu(affine)
+    elif func == 'sigmoid':
+        return math_util.sigmoid(affine)
+    else:
+        assert 0
+
+def cnn_basic_activate_derv(self, G_y, y, hconfig):
+    if hconfig is None:
+        return G_y
+
+    func = get_conf_param(hconfig, 'actfunc', 'relu')
+
+    if func == 'none':
+        return G_y
+    elif func == 'relu':
+        return math_util.relu_derv(y) * G_y
+    elif func == 'sigmoid':
+        return math_util.sigmoid_derv(y) * G_y
+    else:
+        assert 0
+
+CnnBasicModel.activate = cnn_basic_activate
+CnnBasicModel.activate_derv = cnn_basic_activate_derv
