@@ -111,13 +111,35 @@ def cnn_basic_forward_full_layer(self, x, hconfig, pm):
 
     x_org_shape = x.shape
 
-    if len(x.shape) != 2:
+    if len(x.shape) != 2: # 2차원 행렬이 아닌 경우 차원을 모두 모아서 전처리
         mb_size = x.shape[0]
         x = x.reshape([mb_size, -1])
 
     affine = np.matmul(x, pm['w']) + pm['b']
-    y = self.activate(affine, hconfig)
+    y = self.activate(affine, hconfig) # 비선형 함수 적용
 
     return y, [x, y, x_org_shape]
 
 CnnBasicModel.forward_full_layer = cnn_basic_forward_full_layer
+
+def cnn_basic_backprop_full_layer(self, G_y, hconfig, pm, aux):
+    if pm is None:
+        return G_y
+
+    x, y, x_org_shape = aux
+
+    G_affine = self.activate_derv(G_y, y, hconfig)
+
+    g_affine_weight = x.transpose()
+    g_affine_input = pm['w'].transpose()
+
+    G_weight = np.matmul(g_affine_weight, G_affine)
+    G_bias = np.sum(G_affine, axis=0)
+    G_input = np.matmul(G_affine, g_affine_input)
+
+    self.update_param(pm, 'w', G_weight)
+    self.update_param(pm, 'b', G_bias)
+
+    return G_input.reshape(x_org_shape)
+
+CnnBasicModel.backprop_full_layer = cnn_basic_backprop_full_layer
