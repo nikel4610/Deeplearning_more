@@ -246,3 +246,7 @@ def cnn_basic_forward_conv_layer(self, x, hconfig, pm):
     return y, [x_flat, k_flat, x, y]
 
 CnnBasicModel.forward_conv_layer = cnn_basic_forward_conv_layer
+
+def cnn_basic_backprop_conv_layer(self, G_y, hconfig, pm, aux):
+    x_flat, k_flat, x, y = aux
+
