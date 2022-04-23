@@ -177,3 +177,29 @@ def cnn_basic_activate_derv(self, G_y, y, hconfig):
 
 CnnBasicModel.activate = cnn_basic_activate
 CnnBasicModel.activate_derv = cnn_basic_activate_derv
+
+def forward_conv_layer_adhoc(self, x, hconfig, pm):
+    mb_size, xh, xw, xchn = x.shape
+    kh, kw, _, ychn = pm['k'].shape
+
+    conv = np.zeros((mb_size, xh, xw, ychn))
+
+    for n in range(mb_size):
+        for r in range(xh):
+            for c in range(xw):
+                for ym in range(ychn):
+                    for i in range(kh):
+                        for j in range(kw):
+                            rx = r + i - (kh-1) // 2
+                            cx = c + j - (kw-1) // 2
+                            if rx < 0 or rx >= xh:
+                                continue
+                            if cx < 0 or cx >= xw:
+                                continue
+                            for xm in range(xchn):
+                                kval = pm['k'][i][j][xm][ym]
+                                ival = x[n][rx][cx][xm]
+                                conv[n][r][c][ym] += kval * ival
+    y = self.activate(conv + pm['b'], hconfig)
+    return y, [x, y]
+
