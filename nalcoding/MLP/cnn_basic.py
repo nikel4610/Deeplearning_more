@@ -203,3 +203,29 @@ def forward_conv_layer_adhoc(self, x, hconfig, pm):
     y = self.activate(conv + pm['b'], hconfig)
     return y, [x, y]
 
+def forward_conv_layer_better(self, x, hconfig, pm):
+    mb_size, xh, xw, xchn = x.shape
+    kh, kw, _, ychn = pm['k'].shape
+
+    conv = np.zeros((mb_size, xh, xw, ychn))
+
+    bh, bw = (kh-1) // 2, (kw-1) // 2
+    eh, ew = xh + kh - 1, xw + kw - 1
+
+    x_ext = np.zeros((mb_size, eh, ew, xchn)) # 여기서 추가된 열은 0으로 채워짐
+    x_ext[:, bh:bh + xh, bw:bw + xw, :] = x # 버퍼의 중앙 부분에 입력 복사
+
+    # 출력 체널별로 커널의 나머지 세 차원을 한 차원 벡터로 축소
+    k_flat = pm['k'].transpose([3, 0, 1, 2]).reshape([ychn, -1])
+
+    for n in range(mb_size):
+        for r in range(xh):
+            for c in range(xw):
+                for ym in range(ychn):
+                    xe_flat = x_ext[n, r:r+kh, c:c+kw, :].flatten()
+                    conv[n, r, c, ym] = (xe_flat*k_flat[ym]).sum()
+
+    y = self.activate(conv + pm['b'], hconfig)
+
+    return y, [x, y]
+
