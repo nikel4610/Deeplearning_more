@@ -229,3 +229,20 @@ def forward_conv_layer_better(self, x, hconfig, pm):
 
     return y, [x, y]
 
+def cnn_basic_forward_conv_layer(self, x, hconfig, pm):
+    mb_size, xh, xw, xchn = x.shape
+    kh, kw, _, ychn = pm['k'].shape
+
+    x_flat = get_ext_regions_for_conv(x, kh, kw)
+    k_flat = pm['k'].reshape([kh*kw*xchn, ychn]) # 4차원 텐서를 2차원 행렬로 바꿈
+    conv_flat = np.matmul(x_flat, k_flat)
+    conv = conv_flat.reshape([mb_size, xh, xw, ychn]) # 2차원 행렬을 4차원 텐서로 바꿈
+
+    y = self.activate(conv + pm['b'], hconfig)
+
+    if self.need_maps: # 시각화 정보 수집
+        self.maps.append(y)
+
+    return y, [x_flat, k_flat, x, y]
+
+CnnBasicModel.forward_conv_layer = cnn_basic_forward_conv_layer
