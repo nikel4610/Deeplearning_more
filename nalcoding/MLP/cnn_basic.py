@@ -12,6 +12,31 @@ class CnnBasicModel(adam_model.AdamModel):
         super(CnnBasicModel, self).__init__(name, dataset, hconfigs)
         self.use_adam = True # adam 플래그의 초깃값을 True로 바꾸어 자동 적용
 
+def get_ext_regions(x, kh, kw, fill):
+    mb_size, xh, xw, xchn = x.shape
+
+    eh, ew = xh + kh - 1, xw + kw - 1
+    bh, bw = (kh-1)//2, (kw-1)//2
+
+    x_ext = np.zeros((mb_size, eh, ew, xchn), dtype = 'float32') + fill
+    x_ext[:, bh:bh+xh, bw:bw+xw, :] = x
+
+    regs = np.zeros((xh, xw, mb_size*kh*kw*xchn), dtype = 'float32')
+
+    for r in range(xh):
+        for c in range(xw):
+            regs[r, c, :] = x_ext[:, r:r+kh, c:c+kw, :].flatten()
+
+    return regs.reshape([xh, xw, mb_size, kh, kw, xchn])
+
+def get_ext_regions_for_conv(x, kh, kw):
+    mb_size, xh, xw, xchn = x.shape
+
+    regs = get_ext_regions(x, kh, kw, 0)
+    regs = regs.transpose([2, 0, 1, 3, 4, 5])
+
+    return regs.reshape([mb_size*xh*xw, kh*kw*xchn])
+
 def get_layer_type(hconfig):
     if not isinstance(hconfig, list):
         return 'full'
@@ -253,9 +278,9 @@ def cnn_basic_backprop_conv_layer(self, G_y, hconfig, pm, aux):
     kh, kw, xchn, ychn = pm['k'].shape
     mb_size, xh, xw, _ = G_y.shape
 
-    G_conv = self.activate_derv(G_y, y, hconfig)
+    G_conv = self.activate_derv(G_y, y, hconfig) # 역전파 처리 수행
 
-    G_conv_flat = G_conv.reshape(mb_size*xh*xw, ychn)
+    G_conv_flat = G_conv.reshape(mb_size*xh*xw, ychn) # 4차원 텐서를 2차원 행렬로 바꿈
 
     g_conv_k_flat = x_flat.transpose()
     g_conv_x_flat = k_flat.transpose()
@@ -264,13 +289,13 @@ def cnn_basic_backprop_conv_layer(self, G_y, hconfig, pm, aux):
     G_x_flat = np.matmul(G_conv_flat, g_conv_x_flat)
     G_bias = np.sum(G_conv_flat, axis = 0)
 
-    G_kernel = G_k_flat.reshape([kh, kw, xchn, ychn])
-    G_input = undo_ext_regions_for_conv(G_x_flat, x, kh, kw)
+    G_kernel = G_k_flat.reshape([kh, kw, xchn, ychn]) # 2차원 행렬을 4차원 텐서로 바꿈
+    G_input = undo_ext_regions_for_conv(G_x_flat, x, kh, kw) # G_x_flat으로 부터 G_input 얻음
 
     self.update_param(pm, 'k', G_kernel)
     self.update_param(pm, 'b', G_bias)
 
-    return G_input
+    return G_input # 합성곱 계층의 역전파 처리 수행
 
 CnnBasicModel.backprop_conv_layer = cnn_basic_backprop_conv_layer
 
