@@ -357,3 +357,42 @@ def cnn_basic_backprop_avg_layer(self, G_y, hconfig, pm, aux):
 
 CnnBasicModel.forward_avg_layer = cnn_basic_forward_avg_layer
 CnnBasicModel.backprop_avg_layer = cnn_basic_backprop_avg_layer
+
+def cnn_basic_forward_max_layer(self, x, hconfig, pm):
+    mb_size, xh, xw, chn = x.shape
+    sh, sw = get_conf_param_2d(hconfig, 'stride')
+    yh, yw = xh // sh, xw // sw
+
+    x1 = x.reshape([mb_size, yh, sh, yw, sw, chn])
+    x2 = x1.transpose(0, 1, 3, 5, 2, 4)
+    x3 = x2.reshape([-1, sh*sw])
+
+    idxs = np.argmax(x3, axis = 1)
+    y_flat = x3[np.arange(mb_size*yh*yw*chn), idxs]
+    y = y_flat.reshape([mb_size, yh, yw, chn])
+
+    if self.need_maps:
+        self.maps.append(y)
+
+    return y, idxs
+
+def cnn_basic_backprop_max_layer(self, G_y, hconfig, pm, aux):
+    idxs = aux
+
+    mb_size, yh, yw, chn = G_y.shape
+    sh, sw = get_conf_param_2d(hconfig, 'stride')
+    xh, xw = yh * sh, yw * sw
+
+    gy_flat = G_y.flatten()
+
+    gx1 = np.zeros([mb_size*yh*yw*chn, sh*sw], dtype = 'float32')
+    gx1[np.arange(mb_size*yh*yw*chn), idxs] = gy_flat[:]
+    gx2 = gx1.reshape([mb_size, yh, yw, chn, sh, sw])
+    gx3 = gx2.transpose([0, 1, 4, 2, 5, 3])
+
+    G_input = gx3.reshape([mb_size, xh, xw, chn])
+
+    return G_input
+
+CnnBasicModel.forward_max_layer = cnn_basic_forward_max_layer
+CnnBasicModel.backprop_max_layer = cnn_basic_backprop_max_layer
