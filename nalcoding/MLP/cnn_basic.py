@@ -321,3 +321,39 @@ def cnn_basic_backprop_conv_layer(self, G_y, hconfig, pm, aux):
 
 CnnBasicModel.backprop_conv_layer = cnn_basic_backprop_conv_layer
 
+def cnn_basic_forward_avg_layer(self, x, hconfig, pm):
+    mb_size, xh, xw, chn = x.shape
+    sh, sw = get_conf_param_2d(hconfig, 'stride')
+    yh, yw = xh // sh, xw // sw
+
+    x1 = x.reshape([mb_size, yh, sh, yw, sw, chn])
+    x2 = x1.transpose(0, 1, 3, 5, 2, 4)
+    x3 = x2.reshape([-1, sh*sw])
+
+    y_flat = np.average(x3, 1)
+    y = y_flat.reshape([mb_size, yh, yw, chn])
+
+    if self.need_maps:
+        self.maps.append(y)
+
+    return y, None
+
+def cnn_basic_backprop_avg_layer(self, G_y, hconfig, pm, aux):
+    mb_size, yh, yw, chn = G_y.shape
+    sh, sw = get_conf_param_2d(hconfig, 'stride')
+    xh, xw = yh * sh, yw * sw
+
+    gy_flat = G_y.flatten() / (sh * sw)
+
+    gx1 = np.zeros([mb_size*yh*yw*chn, sh*sw], dtype = 'float32')
+    for i in range(sh*sw):
+        gx1[:, i] = gy_flat
+    gx2 = gx1.reshape([mb_size, yh, yw, chn, sh, sw])
+    gx3 = gx2.transpose([0, 1, 4, 2, 5, 3])
+
+    G_input = gx3.reshape([mb_size, xh, xw, chn])
+
+    return G_input
+
+CnnBasicModel.forward_avg_layer = cnn_basic_forward_avg_layer
+CnnBasicModel.backprop_avg_layer = cnn_basic_backprop_avg_layer
