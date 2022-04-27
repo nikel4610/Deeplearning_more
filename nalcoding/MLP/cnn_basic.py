@@ -12,6 +12,28 @@ class CnnBasicModel(adam_model.AdamModel):
         super(CnnBasicModel, self).__init__(name, dataset, hconfigs)
         self.use_adam = True # adam 플래그의 초깃값을 True로 바꾸어 자동 적용
 
+def undo_ext_regions(regs, kh, kw):
+    xh, xw, mb_size, kh, kw, xchn = regs.shape
+
+    eh, ew = xh + kh - 1, xw + kw - 1
+    bh, bw = (kh-1)//2, (kw-1)//2
+
+    gx_ext = np.zeros([mb_size, eh, ew, xchn], dtype = 'float32')
+
+    for r in range(xh):
+        for c in range(xw):
+            gx_ext[:, r:r+kh, c:c+kw, :] += regs[r, c]
+
+    return gx_ext[:, bh:bh+xh, bw:bw+xw, :]
+
+def undo_ext_regions_for_conv(regs, x, kh, kw):
+    mb_size, xh, xw, xchn = x.shape
+
+    regs = regs.reshape([mb_size, xh, xw, kh, kw, xchn])
+    regs = regs.transpose([1, 2, 0, 3, 4, 5]) # 미니배치 축을 세번쨰 축으로 옮긴다
+
+    return undo_ext_regions(regs, kh, kw)
+
 def get_ext_regions(x, kh, kw, fill):
     mb_size, xh, xw, xchn = x.shape
 
