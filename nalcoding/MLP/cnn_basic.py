@@ -396,3 +396,28 @@ def cnn_basic_backprop_max_layer(self, G_y, hconfig, pm, aux):
 
 CnnBasicModel.forward_max_layer = cnn_basic_forward_max_layer
 CnnBasicModel.backprop_max_layer = cnn_basic_backprop_max_layer
+
+def cnn_basic_visualize(self, num):
+    print('Model {} Visualization'.format(self.name))
+
+    self.need_maps = self.show_maps
+    self.maps = []
+
+    deX, deY = self.dataset.get_visualize_data(num)
+    est = self.get_estimate(deX)
+
+    if self.show_maps:
+        for kernel in self.kernels:
+            kh, kw, xchn, ychn = kernel.shape
+            grids = kernel.reshape([kh, kw, -1]).transpose(2, 0, 1)
+            math_util.draw_images_horz(grids[0:5, :, :])
+
+        for pmap in self.maps:
+            math_util.draw_images_horz(pmap[:, :, :, 0])
+
+    self.dataset.visualize(deX, est, deY)
+
+    self.need_maps = False
+    self.maps = None
+
+CnnBasicModel.visualize = cnn_basic_visualize
