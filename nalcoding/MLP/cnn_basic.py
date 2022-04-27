@@ -250,4 +250,27 @@ CnnBasicModel.forward_conv_layer = cnn_basic_forward_conv_layer
 def cnn_basic_backprop_conv_layer(self, G_y, hconfig, pm, aux):
     x_flat, k_flat, x, y = aux
 
-zzaa
+    kh, kw, xchn, ychn = pm['k'].shape
+    mb_size, xh, xw, _ = G_y.shape
+
+    G_conv = self.activate_derv(G_y, y, hconfig)
+
+    G_conv_flat = G_conv.reshape(mb_size*xh*xw, ychn)
+
+    g_conv_k_flat = x_flat.transpose()
+    g_conv_x_flat = k_flat.transpose()
+
+    G_k_flat = np.matmul(g_conv_k_flat, G_conv_flat)
+    G_x_flat = np.matmul(G_conv_flat, g_conv_x_flat)
+    G_bias = np.sum(G_conv_flat, axis = 0)
+
+    G_kernel = G_k_flat.reshape([kh, kw, xchn, ychn])
+    G_input = undo_ext_regions_for_conv(G_x_flat, x, kh, kw)
+
+    self.update_param(pm, 'k', G_kernel)
+    self.update_param(pm, 'b', G_bias)
+
+    return G_input
+
+CnnBasicModel.backprop_conv_layer = cnn_basic_backprop_conv_layer
+
