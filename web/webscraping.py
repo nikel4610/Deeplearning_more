@@ -8,3 +8,7 @@ dangnReq = requests.get('https://www.daangn.com/hot_articles')
 dangnsoup = bs(dangnReq.content, 'html.parser')
 dangnsoup.prettify()
 
+mydata = dangnsoup.findAll('article', {'class': 'card-top'})
+for string in mydata:
+    print(string.get_text()) # 각 글의 제목, 가격, 위치, 관심도, 채팅 출력
+
