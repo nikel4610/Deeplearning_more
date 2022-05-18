@@ -9,10 +9,22 @@ dangnsoup = bs(dangnReq.content, 'html.parser')
 dangnsoup.prettify()
 
 sale = dangnsoup.findAll('h2', 'card-title')
-for productName in sale:
-    print(productName.text.strip()) # 각 글의 제목 출력
-
 price = dangnsoup.findAll('div', 'card-price')
-for productPrice in price:
-    print(productPrice.text.strip()) # 각 글의 가격 출력
+address = dangnsoup.findAll('div', 'card-region-name')
+
+prodName = []
+prodPrice = []
+prodAddress = []
+
+for name in sale:
+    prodName.append(name.text.strip())
+
+for price in price:
+    prodPrice.append(price.text.strip())
+
+for address in address:
+    prodAddress.append(address.text.strip())
+
+for i in range(len(prodName)):
+    print(prodName[i], prodPrice[i], prodAddress[i])
 
