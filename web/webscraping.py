@@ -12,3 +12,7 @@ sale = dangnsoup.findAll('h2', 'card-title')
 for productName in sale:
     print(productName.text.strip()) # 각 글의 제목 출력
 
+price = dangnsoup.findAll('div', 'card-price')
+for productPrice in price:
+    print(productPrice.text.strip()) # 각 글의 가격 출력
+
