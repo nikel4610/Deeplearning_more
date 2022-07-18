@@ -60,3 +60,4 @@ print(array_selected)
 indexes = np.array([5,6,7,8])
 array4 = array1d[ indexes ]
 print('일반 인덱스로 필터링 결과 :',array4)
+# ------------------------------------------------------
