@@ -36,6 +36,7 @@ titanic_df = pd.read_csv('titanic_train.csv')
 # print(titanic_df.head())
 # print(titanic_df.tail())
 
+# csv 파일의 모든 정보 다 보여줌
 pd.set_option('display.max_rows', 1000)
 pd.set_option('display.max_colwidth', 100)
 pd.set_option('display.max_columns', 100)
