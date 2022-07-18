@@ -49,3 +49,6 @@ print(list3)
 dict3 = df_dict.to_dict('list')
 print('\n df_dict.to_dict() 타입:', type(dict3))
 print(dict3)
+
+# DataFrame만 사용하기 때문에 몰라도 OK
+# 그저 예외를 알기만 하는것.
