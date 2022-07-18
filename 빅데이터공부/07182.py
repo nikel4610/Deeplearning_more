@@ -43,9 +43,9 @@ B = np.array([[7, 8],
             [9, 10],
             [11, 12]])
 dot_product = np.dot(A, B)
-print('행렬 내적 결과:\n', dot_product)
+print('행렬 내적 결과:\n', dot_product) 
 
 A = np.array([[1, 2],
             [3, 4]])
-transpose_mat = np.transpose(A)
+transpose_mat = np.transpose(A) # 3x2 행렬은 2x3 행렬로 변환
 print('A의 전치 행렬:\n', transpose_mat)
