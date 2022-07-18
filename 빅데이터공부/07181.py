@@ -22,7 +22,7 @@ import numpy as np
 # print('(row=1,col=0) index 가리키는 값:', array2d[1,0] )
 # print('(row=2,col=2) index 가리키는 값:', array2d[2,2] )
 # ------------------------------------------------------
-# 팬시 인덱싱
+# 팬시 인덱싱 / 거의 안씀
 array1d = np.arange(start=1, stop=10)
 array2d = array1d.reshape(3,3)
 print(array2d)
