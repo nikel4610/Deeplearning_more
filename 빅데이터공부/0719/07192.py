@@ -49,8 +49,15 @@ print(titanic_df.groupby('Pclass')['Age'].agg([max, min]))
 agg_format={'Age':'max', 'SibSp':'sum', 'Fare':'mean'}
 print(titanic_df.groupby('Pclass').agg(agg_format))
 
+# Age 중복값일 경우 마지막 값인 mean이 출력됨
+agg_format={'Age':'max', 'Age':'mean', 'Fare':'mean'}
+titanic_df.groupby('Pclass').agg(agg_format)
+
+# 밑의 방식으로 col을 새로 추가하면 따로 출력됨
 print(titanic_df.groupby(['Pclass']).agg(age_max=('Age', 'max'), age_mean=('Age', 'mean'), fare_mean=('Fare', 'mean')))
 
+# 위의 방법과 똑같은 방식
+# 위의 방법이 좀 더 간결해서 좋은거같다.
 print(
 titanic_df.groupby('Pclass').agg(
  age_max=pd.NamedAgg(column='Age', aggfunc='max'),
