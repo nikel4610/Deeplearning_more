@@ -132,5 +132,6 @@ def get_category(age):
 
 # lambda 식에 위에서 생성한 get_category( ) 함수를 반환값으로 지정. 
 # get_category(X)는 입력값으로 ‘Age’ 칼럼 값을 받아서 해당하는 cat 반환
+# *cat = category
 titanic_df['Age_cat'] = titanic_df['Age'].apply(lambda x : get_category(x))
 print(titanic_df[['Age','Age_cat']].head())
