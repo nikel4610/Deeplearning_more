@@ -43,7 +43,7 @@ print(titanic_groupby)
 titanic_groupby = titanic_df.groupby('Pclass')[['PassengerId', 'Survived']].count()
 print(titanic_groupby)
 
-titanic_df.groupby('Pclass')['Age'].max(), titanic_df.groupby('Pclass')['Age'].min()
+# titanic_df.groupby('Pclass')['Age'].max(), titanic_df.groupby('Pclass')['Age'].min()
 print(titanic_df.groupby('Pclass')['Age'].agg([max, min]))
 
 agg_format={'Age':'max', 'SibSp':'sum', 'Fare':'mean'}
