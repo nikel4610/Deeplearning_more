@@ -1,3 +1,3 @@
 # Deeplearning_more
 
-# with BidData Study
+# with BigData Study
