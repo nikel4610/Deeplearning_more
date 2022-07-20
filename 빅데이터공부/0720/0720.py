@@ -32,10 +32,13 @@ from bs4 import BeautifulSoup
 # data3 = soup.find('div', 'layer_util layer_summary')
 # print(data3.get_text())
 
-res = requests.get('https://davelee-fun.github.io/blog/crawl_test')
+res = requests.get('https://davelee-fun.github.io/blog/crawl_test_css.html')
 soup = BeautifulSoup(res.content, 'html.parser')
-section = soup.find('ul', id='hobby_course_list')
+# section = soup.find('ul', id='hobby_course_list')
+# items = soup.select('ul > li') # ul 바로 밑에 있는 li를 찾음
+# items = soup.select('.course')
+# items = soup.select('#start')
+items = soup.select('li.course.paid')
 
-titles = soup.find_all('li', 'course')
-for index, title in enumerate(titles):
-    print(str(index+1) + '.', title.get_text().split('-')[1].split('[')[0].strip())
+for item in items:
+    print(item.get_text())
