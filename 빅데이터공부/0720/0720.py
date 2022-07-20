@@ -19,15 +19,23 @@ from bs4 import BeautifulSoup
 # print(data.get_text())
 # # print(data2)
 
-res = requests.get('https://v.media.daum.net/v/20170615203441266')
+# res = requests.get('https://v.media.daum.net/v/20170615203441266')
+# soup = BeautifulSoup(res.content, 'html.parser')
+# # mydata = soup.find('h3', 'tit_view')
+# # print(mydata.get_text())
+
+# data2 = soup.find_all('span', 'txt_info')
+# for item in data2:
+#     print(item.get_text())
+# print(data2[1].get_text()) # [번호]를 넣어서 해당 번호의 문장 출력
+
+# data3 = soup.find('div', 'layer_util layer_summary')
+# print(data3.get_text())
+
+res = requests.get('https://davelee-fun.github.io/blog/crawl_test')
 soup = BeautifulSoup(res.content, 'html.parser')
-# mydata = soup.find('h3', 'tit_view')
-# print(mydata.get_text())
+section = soup.find('ul', id='hobby_course_list')
 
-data2 = soup.find_all('span', 'txt_info')
-for item in data2:
-    print(item.get_text())
-print(data2[1].get_text()) # [번호]를 넣어서 해당 번호의 문장 출력
-
-data3 = soup.find('div', 'layer_util layer_summary')
-print(data3.get_text())
+titles = soup.find_all('li', 'course')
+for index, title in enumerate(titles):
+    print(str(index+1) + '.', title.get_text().split('-')[1].split('[')[0].strip())
