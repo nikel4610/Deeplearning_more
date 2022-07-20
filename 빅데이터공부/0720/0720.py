@@ -45,7 +45,7 @@ items = soup.select('tr')
 # select_all = find_all
 for item in items:
     columns = item.select('td')
-    row_str = ''
+    row_str = '' # 한 줄로 만들기 위한 변수
     for column in columns:
         row_str += ', ' + column.get_text()
     print(row_str[2:]) # 맨 앞의 , 제거
