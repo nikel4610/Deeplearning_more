@@ -9,12 +9,12 @@ html = "<html> \
             </body> \
                 </html>"
 soup = BeautifulSoup(html, 'html.parser')
-data = soup.find('h1') # p를 넣으면 p에 해당하는 태그 전체가 나옴, 한번만
+data = soup.find(id='body') # p를 넣으면 p에 해당하는 태그 전체가 나옴, 한번만
 # 전부 찾고 싶으면 find_all() 사용
-data2 = soup.find_all('p')
-for paragraph in data2:
-    print(paragraph.get_text())
-# print(data)
-# print(data.spring)
-# print(data.get_text())
-print(data2)
+# data2 = soup.find_all('p')
+# for paragraph in data2:
+#     print(paragraph.get_text())
+print(data)
+print(data.string)
+print(data.get_text())
+# print(data2)
