@@ -32,13 +32,20 @@ from bs4 import BeautifulSoup
 # data3 = soup.find('div', 'layer_util layer_summary')
 # print(data3.get_text())
 
-res = requests.get('https://davelee-fun.github.io/blog/crawl_test_css.html')
+res = requests.get('https://davelee-fun.github.io/blog/crawl_html_css.html')
 soup = BeautifulSoup(res.content, 'html.parser')
 # section = soup.find('ul', id='hobby_course_list')
 # items = soup.select('ul > li') # ul 바로 밑에 있는 li를 찾음
 # items = soup.select('.course')
-# items = soup.select('#start')
-items = soup.select('li.course.paid')
+# items = soup.select('#start') # id 이름 찾으려면 # 붙이기
+# items = soup.select('li.course.paid')
+items = soup.select('tr')
 
+# select_one = find
+# select_all = find_all
 for item in items:
-    print(item.get_text())
+    columns = item.select('td')
+    row_str = ''
+    for column in columns:
+        row_str += ', ' + column.get_text()
+    print(row_str[2:]) # 맨 앞의 , 제거
