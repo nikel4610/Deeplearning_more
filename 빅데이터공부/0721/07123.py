@@ -116,7 +116,7 @@ import apikeys
 
 client_id = apikeys.client_id
 client_secret = apikeys.client_secret
-# naver_open_api = 'https://openapi.naver.com/v1/search/shop.json?query=무선충전기'
+# naver_open_api = 'https://openapi.naver.com/v1/search/shop.json?query=무선충전기' # &display=갯수&start=시작위치 등등 추가 가능
 # header_params = {"X-Naver-Client-Id":client_id, "X-Naver-Client-Secret":client_secret}
 # res = requests.get(naver_open_api, headers=header_params)
 # if res.status_code == 200:
