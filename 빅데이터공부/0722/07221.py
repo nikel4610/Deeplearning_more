@@ -8,7 +8,7 @@ def write_excel_template(filename, sheetname, listdata):
     # 글자 셀 길이 조절
     excel_sheet.column_dimensions['A'].width = 120
     excel_sheet.column_dimensions['B'].width = 20
-    excel_sheet.column_dimensions['C'].width = 120
+    excel_sheet.column_dimensions['C'].width = 20
 
     if sheetname != '':
         excel_sheet.title = sheetname
@@ -37,7 +37,12 @@ for item in products:
     product_name = item.select_one('a.itemname')
     product_price = item.select_one('div.s-price > strong')
     # product_href = item.select_one('a.itemname')['href']
-    product_info = [product_name.get_text().strip(), product_price.get_text()]
+
+    res_info = requests.get(product_name['href'])
+    soup_info = BeautifulSoup(res_info.content, 'html.parser')
+    products_info1 = soup_info.select_one('p > span.text__seller > a')
+
+    product_info = [product_name.get_text().strip(), product_price.get_text(), products_info1.get_text()]
     # product_info = [product_name.get_text().strip(), product_price.get_text(), product_href]
     product_lists.append(product_info)
 
@@ -46,3 +51,4 @@ write_excel_template('gmarket.xlsx', '상품정보', product_lists)
 #gBestWrap > div > div:nth-child(5) > div > ul
 #gBestWrap > div > div:nth-child(5) > div > ul > li:nth-child(1) > a
 #gBestWrap > div > div:nth-child(5) > div > ul > li:nth-child(1) > div.item_price > div.s-price > strong > span > span
+#container > div.item-topinfowrap > div.item-topinfo.item-topinfo--additional > div.item-topinfo_headline > p > span.text__seller > a
