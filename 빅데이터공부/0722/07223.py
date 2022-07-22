@@ -1,6 +1,9 @@
-data_file = open('D:/vsc_project/Deeplearning_more/빅데이터공부/0722/text_data.txt', 'w', encoding='utf-8')
-data_file.write('유치원A\n')
-data_file.write('초등학교B\n')
-data_file.write('중학교C\n')
-data_file.write('고등학교D\n')
+import csv
+data_file = open('빅데이터공부/0722/USvideos.csv', 'r', encoding='utf-8-sig')
+data_lines = csv.reader(data_file, delimiter=',')
+
+for data_line in data_lines:
+    print (data_line)
+    break
+
 data_file.close()
