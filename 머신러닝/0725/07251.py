@@ -106,3 +106,105 @@ print(np.max(b)) # 8
 print(b.argmin()) # 0
 print(b.argmax()) # 3
 
+# ndarray 객체의 원소 자료형 dtype: b, i8, u8, c16, O, S, U
+b = np.array([[5, 6], [7, 8]])
+# b에 저장된 ndarray 객체의 전치 연산(transpose)
+print(b.T)
+
+# ndarray 객체의 차원의 크기 변경
+# reshape, flatten, newaxis
+a = np.arange(12)
+b = a.reshape(3, 4)
+print(b)
+c = a.reshape(4, -1) # -1은 자동으로 차원의 크기를 계산
+print(c)
+d = a.reshape(2, 2, -1) # 2층 구조로 변경
+print(d)
+
+print(c.flatten()) # 1차원 배열로 변환
+
+# newaxis: 차원만 1차원 증가시킴
+q = np.arange(5)[:, np.newaxis] # 열로 변환
+print(q)
+
+# ndarray 연결시켜주는 함수
+# hstack: 행 수가 동일한 두 ndarray 객체를 연결
+# vstack: 열 수가 동일한 두 ndarray 객체를 연결
+a1 = np.ones((2, 3))
+a2 = np.zeros((2, 2))
+print(np.hstack((a1, a2)))
+
+b1 = np.ones((2, 3))
+b2 = np.zeros((1, 3))
+print(np.vstack((b1, b2)))
+
+# dstack: 깊이 방향으로 ndarray객체를 연결
+c1 = np.ones((2, 3))
+c2 = np.zeros((2, 3))
+print(np.dstack((c1, c2)))
+print(np.dstack((c1, c2)).shape) # (2, 3, 2)
+
+# stack: 그냥 차원을 쌓는다
+print(np.stack((c1, c2)))
+# [[[1. 1. 1.]
+#   [1. 1. 1.]]
+
+#  [[0. 0. 0.]
+#   [0. 0. 0.]]]
+print(np.stack((c1, c2)).shape) # (2, 2, 3)
+
+print(np.stack((c1, c2), axis = 1))
+# [[[1. 1. 1.]
+#   [0. 0. 0.]]
+
+#  [[1. 1. 1.]
+#   [0. 0. 0.]]]
+print(np.stack((c1, c2), axis = 1).shape) # (2, 2, 3)
+
+# 사분위수 반환 함수: percentile(ndarray, 0) 최솟값
+#                   percentile(ndarray, 25) 1사분위
+#                   percentile(ndarray, 50) 2사분위(중앙값)
+#                   percentile(ndarray, 75) 3사분위
+#                   percentile(ndarray, 100) 최댓값
+
+# 난수 생성 함수
+# seed: 난수 생성을 위한 값 
+# rand: 0~1 사이의 난수 생성
+np.random.seed(0) 
+print(np.random.rand(5)) # 5개의 난수 생성
+
+# shuffle(): 데이터의 순서를 바꾸는 함수
+# choice(ndarrat객체, size = None, replace = True, p = None): 샘플링(무작위 선택)
+# randn: 정규분포를 따르는 난수 생성
+# randint: 균일분포의 정수 난수 생성
+# unique(, return_counts): ndarray객체의 원소중에서 중복된 값을 제외하고 중복되지 않는 값을 리스트로 반환 
+print(np.unique([1, 2, 1, 3, 1, 4, 1, 5])) # [1 2 3 4 5]
+print(np.unique([1, 2, 1, 3, 1, 4, 1, 5], return_counts = True)) # (array([1, 2, 3, 4, 5]), array([4, 1, 1, 1, 1], dtype=int64))
+
+# bincount(): 0부터 minlength - 1 까지의 숫자에서 각각 값의 개수를 카운트
+print(np.bincount([1, 2, 1, 3, 1, 4, 1, 5], minlength = 6)) # [0 4 1 1 1 1]
+
+# 정수 부분만 추출하기
+np.random.seed(0)
+z = np.random.uniform(0, 10, 10)
+print(z//1) 
+
+# 행의 값이 0 ~ 4 정수 데이터로 구성된 5x5 2차원 배열 생성
+a = np.zeros((5, 5))
+a += np.arange(5)
+print(a)
+
+# random()함수로 10개의 원소를 생성하고, 생성된 원소중 최대값을 0으로 변경
+a = np.random.random(10)
+a[a.argmax()] = 0
+print(a)
+
+# 크기가 10인 램덤 벡터 생성하고 오름차순으로 정렬
+t = np.random.random(10)
+t.sort()
+print(t)
+
+# 빈도수가 가장 높은 값을 출력
+z = np.random.randint(0, 10, 50)
+print(np.argmax(np.bincount(z)))
+
