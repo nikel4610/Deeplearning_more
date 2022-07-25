@@ -13,7 +13,9 @@ print(arr3[[0, 1], [2, 3]]) # [3 8]
 
 print(arr3[0, : ]) # 0번째 행의 모든 열
 
-bool_indexing = np.array([[True, False, True, False], [True, False, True, False], [True, False, True, False]])
+bool_indexing = np.array([[True, False, True, False], 
+                          [True, False, True, False], 
+                          [True, False, True, False]])
 n = arr3[bool_indexing]
 print(n)  # [ 1  3  5  7  9 11]
 
@@ -207,4 +209,17 @@ print(t)
 # 빈도수가 가장 높은 값을 출력
 z = np.random.randint(0, 10, 50)
 print(np.argmax(np.bincount(z)))
+
+# 주사위를 100번 던져서 나오는 숫자의 평균을 구하기
+z = np.random.randint(1, 7, 100)
+print(np.mean(z))
+
+# 가격이 10000원인 주식이 있고, 그 주식의 일간 수익률은 평균이 0%, 표준편차가 1인 정규 분포를 따른다.
+# 250일 동안의 주가를 무작위로 생성하시오.
+stock = 10000
+z = np.random.normal(0, 1, 250)
+z1 = stock * (1 + z)
+print(z1 // 1)
+print(np.mean(z1))
+print(np.std(z1))
 
