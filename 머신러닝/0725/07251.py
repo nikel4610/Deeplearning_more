@@ -98,6 +98,7 @@ print(c + 1) # [2 3 4 5]
 # 동일 차원의 경우 요소가 하나 이상인 경우 error
 
 # min, max, sum, mean, median, std, var: 연산 수행 후 차원이 축소됨
+# 2차운 이상의 ndarray객체에 axis = 0, axis = 1 적용 가능
 # argmin, argmax: ndarray 객체의 원소 중 최솟값, 최댓값이 저장된 위치 반환
 b = np.array([[5, 6], [7, 8]])
 print(np.min(b)) # 5
