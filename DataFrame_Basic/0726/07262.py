@@ -62,3 +62,15 @@ print(len(df.loc[pd.isnull(df['choice_description'])]))
 df.loc[pd.isnull(df['choice_description']), 'choice_description'] = 'NoData'
 print(df)
 
+# df의 데이터 중 choice_description 컬럼의 데이터값에 Vegetables가 들어가지 않는 데이터 개수 출력
+print(len(df.loc[~df['choice_description'].str.contains('Vegetables')]))
+
+# df의 데이터 중 item_name 컬럼값이 N으로 시작하는 데이터 출력
+print(df.loc[df['item_name'].str.startswith('N')])
+
+# df의 데이터 중 item_name 컬럼값의 문자 개수가 15개 이상인 데이터 출력
+print(df.loc[df['item_name'].str.len() >= 15])
+
+# df의 데이터 중 new_price값이 first 목록에 해당하는 경우 데이터 개수 출력
+first = [1.69, 2.39, 3.39, 4.45, 9.25, 10.98, 11.75, 16.98]
+print(len(df.loc[df['new_price'].isin(first)]))
