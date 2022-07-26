@@ -14,6 +14,22 @@
 # 		HINT> (11-나머지)%10 또는 (11-total%11)%10
 #  */
 
+# test_int = input().split('-')
+# test_jumin = [int(i) for i in test_int[0]] + [int(i) for i in test_int[1]]
+
+# for i in range(len(test_jumin) - 1):
+#     test_jumin[i] *= (2, 3, 4, 5, 6, 7, 8, 9, 2, 3, 4, 5)[i]
+
+# CHECK_DIGIT = 11 - ((sum(test_jumin) - test_jumin[12]) % 11)
+
+# if CHECK_DIGIT // 10 > 0:
+#     CHECK_DIGIT = CHECK_DIGIT % 10
+
+# if CHECK_DIGIT == test_jumin[12]:
+#     print("CORRECT")
+# else:
+#     print("INCORRECT")
+
 # #CodeExcercise 
 # 같은 숫자가 나올 때까지 주사위 6개를 동시에 무한 반복해서 던진다.
 # 같은 숫자가 나올 때까지 몇 번 던졌는지, 1부터 6까지 연속된 숫자는 몇 번 나왔는지 출력하는  프로그램 코드를 작성하시오
@@ -21,3 +37,18 @@
 # 6개 주사위가 모두 동일한 숫자가 나옴 --> 2 2 2 2 2 2
 # 6개가 동일한 숫자가 나올 때까지 주사위를 던진 횟수 --> 10652
 # 6개가  동일한 숫자가 나올 때까지 1 ~6의 연속번호가 나온 횟수 --> 172
+
+import random
+
+dice = [random.randint(1, 6) for i in range(6)]
+list = []
+count = 0
+
+while True:
+    if dice[0] == dice[1] == dice[2] == dice[3] == dice[4] == dice[5]:
+        list.append(dice)
+        break
+    else:
+        count += 1
+        dice = [random.randint(1, 6) for i in range(6)]
+print(list, count)
