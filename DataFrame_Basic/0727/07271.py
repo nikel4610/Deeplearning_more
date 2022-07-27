@@ -161,9 +161,16 @@ import pandas as pd
 # df.pivot_table(index = 'Dim1', columns = 'Period', values = 'First Tooltip', aggfunc = 'mean')
 # print(df)
 
-#올림픽 메달리스트 정보 데이터
-df = pd.read_csv('https://raw.githubusercontent.com/Datamanim/pandas/main/winter.csv')
+# #올림픽 메달리스트 정보 데이터
+# df = pd.read_csv('https://raw.githubusercontent.com/Datamanim/pandas/main/winter.csv')
 
-# 데이터에서 KOR 데이터만 추출하고, 년도에 따른 메달 개수를 pivot 테이블로 생성(메달 타입이 열 인덱스)
+# # 데이터에서 KOR 데이터만 추출하고, 년도에 따른 메달 개수를 pivot 테이블로 생성(메달 타입이 열 인덱스)
+# print(df[df.Country == 'KOR'].pivot_table(index = 'Year', columns = 'Medal', aggfunc = 'size').fillna(0))
 
-# 전체 데이터에서 sport 종류에 따른 성별수를 pivot 테이블로 생성
+# # 전체 데이터에서 sport 종류에 따른 성별수를 pivot 테이블로 생성
+# print(df.pivot_table(index = 'Sport', columns = 'Gender', aggfunc = 'size'))
+
+# # 전체 데이터에서 Disipline 종류에 따른 Medal수를 pivot 테이블로 생성
+# print(df.pivot_table(index = 'Discipline', columns = 'Medal', aggfunc = 'size'))
+
+
