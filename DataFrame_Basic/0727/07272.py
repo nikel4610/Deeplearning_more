@@ -86,5 +86,10 @@ import pandas_datareader as pdr
 # ax2 = df_group1.count()['Bank Name'].plot(kind='line')
 # plt.show()
 
-tesla = pdr.get_data_quandl('TSLA', api_key='srXDVTSXUEfYySwasC3N')
-tesla.to_csv('./tesla_stock_quandle.csv')
+# tesla = pdr.get_data_quandl('TSLA', api_key='')
+# tesla.to_csv('./tesla_stock_quandle.csv')
+
+df = pd.read_csv('./tesla_stock_quandle.csv')
+# 날짜, 시작가, 종가, 최고가, 최저가, 거래수 ...
+print(df.head())
+print(df.info())
