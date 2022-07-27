@@ -42,13 +42,16 @@ import random
 
 dice = [random.randint(1, 6) for i in range(6)]
 list = []
-count = 0
+count = 0 # 던진 횟수
+serial = 0 # 각자 다른 주사위 수가 나왔을 경우
 
 while True:
+    if dice[0] != dice[1] != dice[2] != dice[3] != dice[4] != dice[5]:
+        serial += 1
     if dice[0] == dice[1] == dice[2] == dice[3] == dice[4] == dice[5]:
         list.append(dice)
         break
     else:
         count += 1
         dice = [random.randint(1, 6) for i in range(6)]
-print(list, count)
+print(list, count, serial)
