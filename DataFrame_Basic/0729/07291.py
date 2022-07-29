@@ -9,6 +9,7 @@ import folium
 import warnings
 from glob import glob
 import seaborn as sns
+from  matplotlib import font_manager, rc
 
 # 한글 자연어 처리 (konlpy): 형태소 분석기(Hannanum, Kkma, Komoran, Mecab, Okt 포함)
 
@@ -73,9 +74,6 @@ okt = _okt.Okt()
 # folium.CircleMarker(location = [37.5502, 126.982], radius = 100, popup = '서울', color = 'red', fill_color = 'red', fill_opacity = 0.5).add_to(m)
 # m.save('./map.html')
 
-warnings.filterwarnings(action = 'ignore')
-plt.rc('font', family = 'NanumGothic')
-
 # 하나 이상의 csv파일을 로드해서 하나의 dataframe객체로 병합
 file_names= glob('./data/*.csv')
 
@@ -115,20 +113,34 @@ df_seoul_starbucks .index = range(len(df_seoul_starbucks ))
 # 서울에 있는 스타벅스 점포수를 구별로 출력
 df_seoul_starbucks['시군구명'].value_counts()
 
+font_path="C://Windows//Fonts//malgun.TTF"
+font = font_manager.FontProperties(fname=font_path).get_name()
+plt.rc('font', family=font)
+
 #서울에 있는 구 단위 스타벅스 점포수를 barplot으로 시각화
 plt.figure(figsize = (10, 6))
 plt.title("서울 스타벅스 점포수", fontdict = {"fontsize" : 20 })
 plt.bar(df_seoul_starbucks['시군구명'].value_counts().index, df_seoul_starbucks['시군구명'].value_counts().values)
 plt.xticks(rotation = 'vertical')
-plt.show()
 plt.savefig('starbucks_barplot.png')
+plt.show()
 
 plt.figure(figsize = (10, 6))
-
 sns.countplot(data = df_seoul_starbucks, y = '시군구명')
 plt.savefig('starbucks_countplot.png')
 plt.show()
 
 plt.figure(figsize = (8, 8))
+plt.pie( df_seoul_starbucks['시군구명'].value_counts().values,
+  labels=df_seoul_starbucks['시군구명'].value_counts().index,
+  autopct='%d%%',
+  colors=sns.color_palette('hls', len(df_seoul_starbucks['시군구명'].value_counts().index)),
+  textprops={'fontsize':12})
+    
+plt.axis('equal')
+plt.title('Pie chart for Starbucks count', fontsize = 16, pad = 50)
+plt.savefig('starbucks_piechart.png')
+plt.show()
+
 
 
