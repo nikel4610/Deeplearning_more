@@ -113,34 +113,44 @@ df_seoul_starbucks .index = range(len(df_seoul_starbucks ))
 # 서울에 있는 스타벅스 점포수를 구별로 출력
 df_seoul_starbucks['시군구명'].value_counts()
 
-font_path="C://Windows//Fonts//malgun.TTF"
-font = font_manager.FontProperties(fname=font_path).get_name()
-plt.rc('font', family=font)
+# font_path="C://Windows//Fonts//malgun.TTF"
+# font = font_manager.FontProperties(fname=font_path).get_name()
+# plt.rc('font', family=font)
 
-#서울에 있는 구 단위 스타벅스 점포수를 barplot으로 시각화
-plt.figure(figsize = (10, 6))
-plt.title("서울 스타벅스 점포수", fontdict = {"fontsize" : 20 })
-plt.bar(df_seoul_starbucks['시군구명'].value_counts().index, df_seoul_starbucks['시군구명'].value_counts().values)
-plt.xticks(rotation = 'vertical')
-plt.savefig('starbucks_barplot.png')
-plt.show()
+# #서울에 있는 구 단위 스타벅스 점포수를 barplot으로 시각화
+# plt.figure(figsize = (10, 6))
+# plt.title("서울 스타벅스 점포수", fontdict = {"fontsize" : 20 })
+# plt.bar(df_seoul_starbucks['시군구명'].value_counts().index, df_seoul_starbucks['시군구명'].value_counts().values)
+# plt.xticks(rotation = 'vertical')
+# plt.savefig('starbucks_barplot.png')
+# plt.show()
 
-plt.figure(figsize = (10, 6))
-sns.countplot(data = df_seoul_starbucks, y = '시군구명')
-plt.savefig('starbucks_countplot.png')
-plt.show()
+# plt.figure(figsize = (10, 6))
+# sns.countplot(data = df_seoul_starbucks, y = '시군구명')
+# plt.savefig('starbucks_countplot.png')
+# plt.show()
 
-plt.figure(figsize = (8, 8))
-plt.pie( df_seoul_starbucks['시군구명'].value_counts().values,
-  labels=df_seoul_starbucks['시군구명'].value_counts().index,
-  autopct='%d%%',
-  colors=sns.color_palette('hls', len(df_seoul_starbucks['시군구명'].value_counts().index)),
-  textprops={'fontsize':12})
+# plt.figure(figsize = (8, 8))
+# plt.pie( df_seoul_starbucks['시군구명'].value_counts().values,
+#   labels=df_seoul_starbucks['시군구명'].value_counts().index,
+#   autopct='%d%%',
+#   colors=sns.color_palette('hls', len(df_seoul_starbucks['시군구명'].value_counts().index)),
+#   textprops={'fontsize':12})
     
-plt.axis('equal')
-plt.title('Pie chart for Starbucks count', fontsize = 16, pad = 50)
-plt.savefig('starbucks_piechart.png')
-plt.show()
+# plt.axis('equal')
+# plt.title('Pie chart for Starbucks count', fontsize = 16, pad = 50)
+# plt.savefig('starbucks_piechart.png')
+# plt.show()
 
+# df_seoul_starbucks[['지점명', '경도', '위도']] 데이터 추출해서 지도에 위치 표시
+lat = df_seoul_starbucks['위도'].mean()
+lon = df_seoul_starbucks['경도'].mean()
 
+m = folium.Map(location=[lat, lon], zoom_start=12)
 
+for i in df_seoul_starbucks.index:
+    sub_lat = df_seoul_starbucks.loc[i, '위도']
+    sub_lon = df_seoul_starbucks.loc[i, '경도']
+    sub_name = df_seoul_starbucks.loc[i, '지점명']
+    folium.Marker([sub_lat, sub_lon], popup = sub_name).add_to(m)
+m.save('starbucks_map.html')
