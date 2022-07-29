@@ -6,6 +6,9 @@ import pandas as pd
 import numpy as np
 from collections import Counter
 import folium
+import warnings
+from glob import glob
+import seaborn as sns
 
 # 한글 자연어 처리 (konlpy): 형태소 분석기(Hannanum, Kkma, Komoran, Mecab, Okt 포함)
 
@@ -63,9 +66,69 @@ okt = _okt.Okt()
 
 # 어떤 지도를 활용하느냐에 따라 시각적 분석 효과는 다르다
 
-# Map 클래스로 지도 로드, 범위는 location 속성
-m = folium.Map(location=[37.5502, 126.982], zoom_start = 12)
+# # Map 클래스로 지도 로드, 범위는 location 속성
+# m = folium.Map(location=[37.5502, 126.982], zoom_start = 12)
 
-folium.Marker(location = [37.5502, 126.982], popup = '서울', icon = folium.Icon(color = 'red', icon = 'star')).add_to(m)
-folium.CircleMarker(location = [37.5502, 126.982], radius = 100, popup = '서울', color = 'red', fill_color = 'red', fill_opacity = 0.5).add_to(m)
-m.save('./map.html')
+# folium.Marker(location = [37.5502, 126.982], popup = '서울', icon = folium.Icon(color = 'red', icon = 'star')).add_to(m)
+# folium.CircleMarker(location = [37.5502, 126.982], radius = 100, popup = '서울', color = 'red', fill_color = 'red', fill_opacity = 0.5).add_to(m)
+# m.save('./map.html')
+
+warnings.filterwarnings(action = 'ignore')
+plt.rc('font', family = 'NanumGothic')
+
+# 하나 이상의 csv파일을 로드해서 하나의 dataframe객체로 병합
+file_names= glob('./data/*.csv')
+
+total = pd.DataFrame()
+for file_name  in file_names:
+    temp = pd.read_csv(file_name, encoding = 'utf-8')
+    total = pd.concat([total, temp])
+
+total.reset_index(inplace = True, drop = True)
+
+# 분석에 필요한 컬럼 추출
+data_columns = ['상가업소번호', '상호명','지점명', '상권업종대분류명', '상권업종중분류명', '시도명', '시군구명', '행정동명', '경도', '위도']
+data = total[data_columns]
+
+# 메모리 낭비를 줄이기 위해 사용하지 않을 변수 삭제
+del total
+
+# 상권업종중분류명이 "커피점/카페" 인 데이터 추출하고 인덱스 재설정
+df_coffee = data[data['상권업종중분류명']=="커피점/카페"]
+df_coffee.index = range(len(df_coffee))
+
+# # 전국 커피전문점 점포 수 출력
+# print('전국 커피전문점 점포 수:', len(df_coffee))
+
+# 커피전문점 중에 "서울"에 위치하고 있는 점포만 추출하고, 점포 수 출력
+df_seoul_coffee = df_coffee[df_coffee["시도명"]=="서울특별시"]
+df_seoul_coffee.index = range(len(df_seoul_coffee))
+
+# 스타벅스 상호를 가진 전국의 커피전문점 점포 추출, 점포 수 출력
+df_starbucks = df_coffee[df_coffee["상호명"].str.contains("스타벅스")]
+df_starbucks.index = range(len(df_starbucks))
+
+# 서울에 있는 스타벅스 커피전문점 점포 추출, 점포 수 출력
+df_seoul_starbucks = df_starbucks[df_starbucks["시도명"]=="서울특별시"]
+df_seoul_starbucks .index = range(len(df_seoul_starbucks ))
+
+# 서울에 있는 스타벅스 점포수를 구별로 출력
+df_seoul_starbucks['시군구명'].value_counts()
+
+#서울에 있는 구 단위 스타벅스 점포수를 barplot으로 시각화
+plt.figure(figsize = (10, 6))
+plt.title("서울 스타벅스 점포수", fontdict = {"fontsize" : 20 })
+plt.bar(df_seoul_starbucks['시군구명'].value_counts().index, df_seoul_starbucks['시군구명'].value_counts().values)
+plt.xticks(rotation = 'vertical')
+plt.show()
+plt.savefig('starbucks_barplot.png')
+
+plt.figure(figsize = (10, 6))
+
+sns.countplot(data = df_seoul_starbucks, y = '시군구명')
+plt.savefig('starbucks_countplot.png')
+plt.show()
+
+plt.figure(figsize = (8, 8))
+
+
