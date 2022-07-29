@@ -5,6 +5,7 @@ from PIL import Image
 import pandas as pd
 import numpy as np
 from collections import Counter
+import folium
 
 # 한글 자연어 처리 (konlpy): 형태소 분석기(Hannanum, Kkma, Komoran, Mecab, Okt 포함)
 
@@ -54,3 +55,17 @@ okt = _okt.Okt()
 # plt.axis('off')
 # wc.to_file('./블로그_워드클라우드.png')
 
+# 지도 시각화 유형
+# Dot Density Map: 지도 위에 데이터 분포를 점으로 표현
+# Choropleth Map(Field Map): 지리적 영역 범위별 수치 데이터 값을 색으로 표현
+# Symbol Map(Bubble Map): 지도의 특정 지점에 해당하는 수치 값을 symbol의 크기로 표현
+# Connection Map(Flow Map): 지역 간 이동 경로 표현하는 시각화 지도
+
+# 어떤 지도를 활용하느냐에 따라 시각적 분석 효과는 다르다
+
+# Map 클래스로 지도 로드, 범위는 location 속성
+m = folium.Map(location=[37.5502, 126.982], zoom_start = 12)
+
+folium.Marker(location = [37.5502, 126.982], popup = '서울', icon = folium.Icon(color = 'red', icon = 'star')).add_to(m)
+folium.CircleMarker(location = [37.5502, 126.982], radius = 100, popup = '서울', color = 'red', fill_color = 'red', fill_opacity = 0.5).add_to(m)
+m.save('./map.html')
