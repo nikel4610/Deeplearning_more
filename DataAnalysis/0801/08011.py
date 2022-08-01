@@ -99,5 +99,42 @@ titanic_df = pd.read_csv('./titanic_train.csv')
 # sns.heatmap(corr, annot=True, fmt='.1f', linewidths=0.5, cmap='YlGnBu')
 # sns.heatmap(corr, annot=True, fmt='.2g', cbar=True, linewidths=0.5, cmap='YlGnBu')
 
+sns.set_theme(style='whitegrid')
+penguins = sns.load_dataset("penguins")
+
+# sns.histplot(data=penguins, x="flipper_length_mm", hue="species", multiple='stack')
+# sns.displot(data=penguins, x="flipper_length_mm", hue="species", col="species")
+
+# sns.barplot(data=penguins, x="flipper_length_mm", y="species", hue='species')
+# sns.barplot(data=penguins, y="flipper_length_mm", x="species", hue='species')
+# sns.barplot(data=penguins, y="body_mass_g", x="species", hue='species')
+
+# sns.countplot(data=penguins, x='species', hue='sex')
+
+# sns.boxplot(data=penguins, x="flipper_length_mm", y="species", hue="species")
+# sns.boxplot(data=penguins, x="body_mass_g", y="species", hue="species")
+# sns.boxplot(data=penguins, x="body_mass_g", y="species", hue="sex")
+# sns.boxplot(data=penguins, y="body_mass_g", x="species", hue="sex")
+
+# sns.pairplot(data=penguins, hue="island")
+# sns.pairplot(data=penguins, hue="species")
+# sns.pairplot(data=penguins, hue="sex")
+
+# sns.violinplot(data=penguins, y="flipper_length_mm", x="species", hue="species")
+# sns.violinplot(data=penguins, y="body_mass_g", x="species", hue="sex")
+
+# sns.lineplot(data=penguins, x="body_mass_g", y="flipper_length_mm", hue="species")
+# sns.lineplot(data=penguins, y="body_mass_g", x="flipper_length_mm", hue="sex")
+# sns.lineplot(data=penguins, y="bill_length_mm", x="bill_depth_mm", hue="species")
+
+# sns.pointplot(data=penguins, y="flipper_length_mm", x="sex", hue="species")
+# sns.pointplot(data=penguins, y="bill_length_mm", x="sex", hue="species")
+
+# sns.scatterplot(data=penguins, x="body_mass_g", y="flipper_length_mm", hue="species")
+# sns.scatterplot(data=penguins, x="bill_length_mm", y="bill_depth_mm", hue="sex")
+
+corr = penguins.corr()
+sns.heatmap(corr)
+
 plt.show()
 
