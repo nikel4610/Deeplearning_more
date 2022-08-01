@@ -73,3 +73,21 @@ plt.rc('font', family=font)
 # plt.legend() # 범례 표시
 # plt.show() # 그래프 나타내기
 
+jan = []
+aug = []
+
+for row in data:
+    month = row[0].split('-')[1]
+    if row[-1] != '':
+        if month == '01':
+            jan.append(float(row[-1]))
+        if month == '08':
+            aug.append(float(row[-1]))
+
+plt.hist(jan, bins=100, color='red', label='January')
+plt.hist(aug, bins=100, color='blue', label='August')
+plt.xlabel('온도(섭씨)')
+plt.ylabel('빈도')
+plt.legend()
+plt.show()
+
