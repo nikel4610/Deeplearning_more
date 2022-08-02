@@ -258,13 +258,24 @@ next(data)
 #     result.append(row[10])
 # result.sort()
 
-# 아침 7 ~ 9시 승차 인원 최대 역 과 인원수 찾기
+# # 아침 7 ~ 9시 승차 인원 최대 역 과 인원수 찾기
+# mx = 0
+# mx_station = ''
+# for row in data:
+#     row[4: ] = map(int, row[4: ])
+#     if sum(row[10:15:2]) > mx:
+#         mx = sum(row[10:15:2])
+#         mx_station = row[3] + '(' + row[1] + ')'
+
+# print(mx_station, mx)
+
+# 아침 7 ~ 9시 하차 인원 최대 역 과 인원수 찾기
 mx = 0
 mx_station = ''
 for row in data:
     row[4: ] = map(int, row[4: ])
-    if sum(row[10:15:2]) > mx:
-        mx = sum(row[10:15:2])
+    if sum(row[11:15:2]) > mx:
+        mx = sum(row[11:15:2])
         mx_station = row[3] + '(' + row[1] + ')'
 
 print(mx_station, mx)
