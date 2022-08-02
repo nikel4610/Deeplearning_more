@@ -3,6 +3,8 @@ import numpy as np
 import csv
 import matplotlib.pyplot as plt
 from  matplotlib import font_manager, rc
+import matplotlib.colors as mcolors
+import math
 
 font_path="C://Windows//Fonts//malgun.TTF"
 font = font_manager.FontProperties(fname=font_path).get_name()
@@ -77,30 +79,137 @@ plt.rcParams['axes.unicode_minus'] = False
 # plt.bar(range(101), result)
 # plt.show()
 
-f = open('gender.csv')
-data = csv.reader(f)
+# f = open('gender.csv')
+# data = csv.reader(f)
 
-m = []
-f = []
+# m = []
+# f = []
+
+# # for row in data :
+# #     if '신도림' in row[0] :
+# #         for i in range(0,101) :
+# #             m.append(int(row[i+3]))
+# #             f.append(int(row[-(i+1)]))
+# # f.reverse()
 
 # for row in data :
-#     if '신도림' in row[0] :
-#         for i in range(0,101) :
-#             m.append(int(row[i+3]))
-#             f.append(int(row[-(i+1)]))
-# f.reverse()
+#     if '무거' in row[0] :
+#         for i in row[3:104] :
+#             m.append(-int(i)) # 마이너스 부호를 넣어서 음수로 변경
+#         for i in row[106:] :
+#             f.append(int(i))
 
-for row in data :
-    if '무거' in row[0] :
-        for i in row[3:104] :
-            m.append(-int(i)) # 마이너스 부호를 넣어서 음수로 변경
-        for i in row[106:] :
-            f.append(int(i))
+# plt.style.use('ggplot')
+# # plt.figure(figsize = (10,5), dpi=300)
+# plt.title('지역의 남녀 성별 인구 분포')
+# plt.barh(range(101), m, label = '남성')
+# plt.barh(range(101), f, label = '여성')
+# plt.legend()
+# plt.show()
 
-plt.style.use('ggplot')
+# name = input()
+# for row in data:
+#     if name in row[0]:
+#         for i in row[3:104]:
+#             m.append(-int(i))
+#         for i in row[106:]:
+#             f.append(int(i))
+#         break
+
+# colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
+
+# # Sort colors by hue, saturation, value and name.
+# by_hsv = sorted((tuple(mcolors.rgb_to_hsv(mcolors.to_rgba(color)[:3])), name)
+#                 for name, color in colors.items())
+# sorted_names = [name for hsv, name in by_hsv]
+
+# n = len(sorted_names)
+# ncols = 4
+# nrows = n // ncols
+
+# fig, ax = plt.subplots(figsize=(9, 8), dpi = 300)
+
+# # Get height and width
+# X, Y = fig.get_dpi() * fig.get_size_inches()
+# h = Y / (nrows + 1)
+# w = X / ncols
+
+# for i, name in enumerate(sorted_names):
+#     row = i % nrows
+#     col = i // nrows
+#     y = Y - (row * h) - h
+
+#     xi_line = w * (col + 0.05)
+#     xf_line = w * (col + 0.25)
+#     xi_text = w * (col + 0.3)
+
+#     ax.text(xi_text, y, name, fontsize=(10),
+#             horizontalalignment='left',
+#             verticalalignment='center')
+
+#     ax.hlines(y + h * 0.1, xi_line, xf_line,
+#               color=colors[name], linewidth=(6))
+
+# ax.set_xlim(0, X)
+# ax.set_ylim(0, Y)
+# ax.set_axis_off()
+
+# fig.subplots_adjust(left=0, right=1,
+#                     top=1, bottom=0,
+#                     hspace=0, wspace=0)
+# plt.show()
+
+# plt.rc('font', family = 'Malgun Gothic')
+# size = [2441, 2312, 1031, 1233]
+# label = ['A형','B형','AB형', 'O형']
+# color = ['darkmagenta', 'deeppink', 'hotpink', 'pink']
+# plt.axis('equal')
+# plt.pie(size, labels = label, autopct = '%.1f%%', explode = (0,0,0.1,0), colors = color)
+# plt.legend()
+# plt.show()
+
+# size = []
+# name = input('찾고 싶은 지역의 이름을 알려주세요 : ')
+# for row in data :
+#     if name in row[0] :
+#         m = 0
+#         f = 0
+#         for i in range(101) :
+#             m += int(row[i+3])
+#             f += int(row[i+106])
+#         break
+# size.append(m)
+# size.append(f)
+
+# plt.rc('font', family ='Malgun Gothic')
+# color = ['crimson', 'darkcyan']
+# plt.axis('equal')
+# plt.pie(size, labels = ['남','여'], autopct ='%.1f%%', colors = color, startangle =90)
+# plt.title(name + ' 지역의 남녀 성별 비율')
+# plt.show()
+
+# size = []
+# name = input('궁금한 동네를 입력해주세요 : ')
+# for row in data :
+#     if name in row[0] :
+#         for i in range(3,104) :
+#             m.append(int(row[i]))
+#             f.append(int(row[i+103]))
+#             size.append(math.sqrt(int(row[i]) + int(row[i+103])))
+#         break
+
+# plt.style.use('ggplot')
+# plt.rc('font',family='Malgun Gothic')
 # plt.figure(figsize = (10,5), dpi=300)
-plt.title('지역의 남녀 성별 인구 분포')
-plt.barh(range(101), m, label = '남성')
-plt.barh(range(101), f, label = '여성')
-plt.legend()
-plt.show()
+# plt.title(name+' 지역의 성별 인구 그래프')
+# plt.scatter(m, f, s = size, c = range(101), alpha=0.5, cmap='jet')
+# plt.colorbar()
+# plt.plot(range(max(m)),range(max(m)), 'g')
+# plt.xlabel('남성 인구 수')
+# plt.ylabel('여성 인구 수')
+# plt.show()
+
+f = open('./2022년 06월  교통카드 통계자료.csv')
+data = csv.reader(f)
+next(data)
+
