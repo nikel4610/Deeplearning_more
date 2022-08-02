@@ -209,7 +209,62 @@ plt.rcParams['axes.unicode_minus'] = False
 # plt.ylabel('여성 인구 수')
 # plt.show()
 
-f = open('./2022년 06월  교통카드 통계자료.csv')
+f = open('./subwaytime.csv')
 data = csv.reader(f)
 next(data)
+next(data)
 
+# mx = 0
+# rate = 0
+
+# for row in data :
+#     for i in range(4,8) :
+#         row[i] = int(row[i])
+#     if row[6] != 0 and (row[4] + row[6]) > 100000 :
+#         rate = row[4] / (row[4] + row[6])
+#         if rate > mx :
+#             mx = rate
+#             mx_station = row[3] + ' ' + row[1]
+
+# print(mx_station, round(mx * 100,2))
+
+# label = ['유임승차','유임하차','무임승차','무임하차']
+# c = ['#14CCC0', '#389993', '#FF1C6A', '#CC14AF']
+# plt.rc('font', family = 'Malgun Gothic')
+# for row in data :
+#     for i in range(4,8) :
+#         row[i] = int(row[i])
+# plt.figure(dpi = 300)
+# plt.title(row[3] + ' ' + row[1])
+# plt.pie(row[4:8], labels = label, colors = c, autopct = '%1.f%%')
+# plt.axis('equal')
+# plt.show()
+
+# mx = [0] * 4
+# mx_station = [''] * 4
+# label = ['유임승차', '유임하차', '무임승차', '무임하차']
+# for row in data:
+#     for i in range(4, 8):
+#         row[i] = int(row[i])
+#         if row[i] > mx[i-4]:
+#             mx[i-4] = row[i]
+#             mx_station[i-4] = row[3] + ' ' + row[1]
+# for i in range(4):
+#     print(label[i] + ' : ' + mx_station[i], mx[i])
+
+# result = []
+# for row in data:
+#     row[4: ] = map(int, row[4: ])
+#     result.append(row[10])
+# result.sort()
+
+# 아침 7 ~ 9시 승차 인원 최대 역 과 인원수 찾기
+mx = 0
+mx_station = ''
+for row in data:
+    row[4: ] = map(int, row[4: ])
+    if sum(row[10:15:2]) > mx:
+        mx = sum(row[10:15:2])
+        mx_station = row[3] + '(' + row[1] + ')'
+
+print(mx_station, mx)
