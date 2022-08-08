@@ -117,3 +117,36 @@ final_data2 = new_data2.dropna()
 # plt.title("Pie chart for Q4 column in South Korea", fontsize=32, pad=50)
 # plt.show()
 
+# https://www.kaggle.com/code/subinium/kaggle-2020-visualization-analysis/notebook
+
+# Q2 Analysis
+data['Q2'] = data['Q2'].apply(lambda x : 'ETC' if x not in ['Man', 'Woman'] else x)
+data_q1q2 = data[data['Q2'] != 'ETC'].groupby(['Q2'])['Q1'].value_counts().unstack().sort_index()
+man = data_q1q2.loc['Man']
+woman = -data_q1q2.loc['Woman']
+
+fig, ax = plt.subplots(1,1, figsize=(15, 6))
+ax.bar(man.index, man, width=0.55, color='#004c70', alpha=0.8, label='Male')
+ax.bar(woman.index, woman, width=0.55, color='#990000', alpha=0.8, label='Female')
+ax.set_ylim(-1200, 3500)
+
+for i in man.index:
+    ax.annotate(f"{man[i]}", 
+                   xy=(i, man[i] + 100),
+                   va = 'center', ha='center',fontweight='light', fontfamily='serif',
+                   color='#4a4a4a')
+    
+for i in woman.index:
+    ax.annotate(f"{-woman[i]}", 
+                   xy=(i, woman[i] - 100),
+                   va = 'center', ha='center',fontweight='light', fontfamily='serif',
+                   color='#4a4a4a')    
+
+for s in ['top', 'left', 'right', 'bottom']:
+    ax.spines[s].set_visible(False)
+
+ax.set_xticklabels(data_q1q2.columns, fontfamily='serif')
+ax.set_yticks([])    
+ax.legend()
+fig.text(0.16, 0.95, 'Age / Gender Distribution', fontsize=15, fontweight='bold', fontfamily='serif')    
+plt.show()
