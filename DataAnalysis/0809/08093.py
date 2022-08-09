@@ -29,16 +29,16 @@ def country_name_convert(row):
 def create_dateframe(filename):
     doc = pd.read_csv(PATH + filename, encoding='utf-8-sig') # 1. csv 파일 읽기
     try:
-        doc = doc[['Country_Region', 'Confirmed']] # 2. 특정 컬럼만 선택해서 데이터프레임 만들기
+        doc = doc[['Country_Region', 'Deaths']] # 2. 특정 컬럼만 선택해서 데이터프레임 만들기
     except:
-        doc = doc[['Country/Region', 'Confirmed']] # 2. 특정 컬럼만 선택해서 데이터프레임 만들기
-        doc.columns = ['Country_Region', 'Confirmed']
-    doc = doc.dropna(subset=['Confirmed']) # 3. 특정 컬럼에 없는 데이터 삭제하기    
+        doc = doc[['Country/Region', 'Deaths']] # 2. 특정 컬럼만 선택해서 데이터프레임 만들기
+        doc.columns = ['Country_Region', 'Deaths']
+    doc = doc.dropna(subset=['Deaths']) # 3. 특정 컬럼에 없는 데이터 삭제하기    
     doc['Country_Region'] = doc.apply(country_name_convert, axis=1) # 4. 'Country_Region'의 국가명을 여러 파일에 일관되게 
-    doc = doc.astype({'Confirmed': 'int64'}) # 5. 특정 컬럼의 데이터 타입 변경하기
+    doc = doc.astype({'Deaths': 'int64'}) # 5. 특정 컬럼의 데이터 타입 변경하기
     doc = doc.groupby('Country_Region').sum() # 6. 특정 컬럼으로 중복된 데이터를 합치기 -> 인덱스로 빠진다
 
-    # 7. 파일명을 기반으로 날짜 문자열 변환하고, 'Confirmed' 컬럼명 변경하기
+    # 7. 파일명을 기반으로 날짜 문자열 변환하고, 'Deaths' 컬럼명 변경하기
     date_column = filename.split(".")[0].lstrip('0').replace('-', '/') # 날짜 문자열 변경
     doc.columns = [date_column] # 컬럼 이름 변경
     return doc
@@ -67,4 +67,4 @@ def generate_dateframe_by_path(PATH):
 doc = generate_dateframe_by_path(PATH)
 # print(doc.head())
 doc = doc.astype('int64')
-doc.to_csv("./COVID-19-master/final_df.csv")
+doc.to_csv("./COVID-19-master/final_df_deaths.csv")

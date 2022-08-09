@@ -1,7 +1,7 @@
 from itertools import count
 import pandas as pd
 
-df_confirmed = pd.read_csv("./COVID-19-master/final_df.csv")
+df_confirmed = pd.read_csv("./COVID-19-master/final_df_deaths.csv")
 # df_confirmed.head()
 
 country_info = pd.read_csv("./COVID-19-master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv", encoding='utf-8-sig',
@@ -35,4 +35,4 @@ doc_final_country = doc_final_country[cols]
 # 컬럼명 변경
 cols[1] = 'Country_Flag'
 doc_final_country.columns = cols
-doc_final_country.to_csv("./COVID-19-master/final_covid_data_for_graph.csv")
+doc_final_country.to_csv("./COVID-19-master/final_covid_data_for_graph_deaths.csv")
