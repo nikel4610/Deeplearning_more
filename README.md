@@ -18,8 +18,8 @@
 ![Figure_1](https://user-images.githubusercontent.com/73810942/182981352-dc7c3c2b-55fc-4849-9dc0-02d941404df6.png)
     
     Covid19 confirmed population 2020/1 ~ 2020/6
-  https://app.flourish.studio/visualisation/10862296/edit  
+  https://public.flourish.studio/visualisation/10862296/  
    
     
     Covid19 Death Population 2020/1 ~ 2020/6  
-https://app.flourish.studio/visualisation/10862366/edit
+https://public.flourish.studio/visualisation/10862366/
