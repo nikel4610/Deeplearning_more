@@ -16,3 +16,6 @@
 
 
 ![Figure_1](https://user-images.githubusercontent.com/73810942/182981352-dc7c3c2b-55fc-4849-9dc0-02d941404df6.png)
+    
+    Covid19 confirmed population 2020 ~
+  https://app.flourish.studio/visualisation/10862296/edit
