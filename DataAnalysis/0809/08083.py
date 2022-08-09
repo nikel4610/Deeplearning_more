@@ -2,16 +2,16 @@ import pandas as pd
 import json
 import os
 
-PATH = "./COVID-19-master/csse_covid_19_data/csse_covid_19_daily_reports/"
+PATH = "./csse_covid_19_data/csse_covid_19_daily_reports/"
 doc = pd.read_csv(PATH + "04-01-2020.csv", encoding='utf-8-sig')
 # print(doc.head())
 
 country_info = pd.read_csv("./COVID-19-master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv", encoding='utf-8-sig') # 나라 정보 csv
 # print(country_info.head())
-test_df = pd.merge(doc, country_info, how='left', on='Country_Region') # 데이터프레임 합치기
+# test_df = pd.merge(doc, country_info, how='left', on='Country_Region') # 데이터프레임 합치기
 # print(test_df.head())
 
-test_df.isnull().sum()
+# test_df.isnull().sum()
 # nan_rows = test_df[test_df['iso2'].isnull()] # iso2 칼럼이 매칭되지 않은 국가들 확인
 # print(nan_rows.head())
 
