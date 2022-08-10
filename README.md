@@ -30,3 +30,7 @@ https://public.flourish.studio/visualisation/10862366/
     
     Covid19 Death Population 2020/1 ~ 2020/8  
 https://public.flourish.studio/visualisation/10870232/
+
+
+----
+## Covid19 dataset from: https://github.com/CSSEGISandData/COVID-19
