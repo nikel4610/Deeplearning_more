@@ -28,7 +28,7 @@ https://public.flourish.studio/visualisation/10862366/
   https://public.flourish.studio/visualisation/10870225/  
    
     
-    Covid19 Death Population 2020/1 ~ 2020/8  
+    Covid19 Death Population 2022/1 ~ 2022/8  
 https://public.flourish.studio/visualisation/10870232/
 
 
