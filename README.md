@@ -14,32 +14,48 @@
 
     2022년 2월 - 8월 카카오톡에서 사용한 단어 빈도수
 
-
 ![Figure_1](https://user-images.githubusercontent.com/73810942/182981352-dc7c3c2b-55fc-4849-9dc0-02d941404df6.png)
-    
+
     Covid19 confirmed population 2020/1 ~ 2020/6
-  https://public.flourish.studio/visualisation/10862296/  
-   
-    
-    Covid19 Death Population 2020/1 ~ 2020/6  
-https://public.flourish.studio/visualisation/10862366/  
+
+https://public.flourish.studio/visualisation/10862296/
+
+    Covid19 Death Population 2020/1 ~ 2020/6
+
+https://public.flourish.studio/visualisation/10862366/
 
     Covid19 confirmed population 2022/1 ~ 2022/8
-  https://public.flourish.studio/visualisation/10870225/  
-   
-    
-    Covid19 Death Population 2022/1 ~ 2022/8  
+
+https://public.flourish.studio/visualisation/10870225/
+
+    Covid19 Death Population 2022/1 ~ 2022/8
+
 https://public.flourish.studio/visualisation/10870232/
 
-----
-----
+---
+
+---
 
     2022 COVID-19 Congirmed in US
+
 https://public.flourish.studio/visualisation/10870512/
 
-    2022 COVID-19 Death in US
+    2022 COVID-19 Deaths in US
+
 https://public.flourish.studio/visualisation/10870585/
 
-----
-----
+---
+
+---
+
+    2022 COVID-19 Confirmed in China(not accurate)
+
+https://public.flourish.studio/visualisation/10871270/
+
+    2022 COVID-19 Deaths in China(not accurate)
+
+https://public.flourish.studio/visualisation/10871403/
+
+---
+
 ## Covid19 dataset from: https://github.com/CSSEGISandData/COVID-19
