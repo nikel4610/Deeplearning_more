@@ -59,3 +59,17 @@ https://public.flourish.studio/visualisation/10871403/
 ---
 
 ## Covid19 dataset from: https://github.com/CSSEGISandData/COVID-19
+
+---
+
+    2020 ~ 2022 COVID-19 Confirmed ratio in Seoul and Korea
+
+https://public.flourish.studio/visualisation/10879745/
+
+    2020 ~ 2022 COVID-19 Death ratio in Seoul and Korea
+
+https://public.flourish.studio/visualisation/10879787/
+
+Color = Korea Confirmed or Death  
+Circle Size = Seoul Confirmed or Death  
+Y Aris = Korea and Seoul Confirmed or Death ratio
