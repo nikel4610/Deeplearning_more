@@ -11,7 +11,7 @@ country_info = pd.read_csv("./COVID-19-master/csse_covid_19_data/UID_ISO_FIPS_Lo
 def create_dateframe(filename):
     doc = pd.read_csv(PATH + filename, encoding='utf-8-sig') # 1. csv 파일 읽기
     # China 컬럼만 추출
-    doc = doc[doc['Country_Region'] == 'China']
+    # doc = doc[doc['Country_Region'] == 'China']
     doc = doc[['Province_State', 'Deaths']] # 2. 특정 컬럼만 선택해서 데이터프레임 만들기
     doc = doc.dropna(subset=['Deaths']) # 3. 특정 컬럼에 없는 데이터 삭제하기    
     doc = doc.astype({'Deaths': 'int64'}) # 5. 특정 컬럼의 데이터 타입 변경하기
